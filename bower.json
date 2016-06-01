@@ -1,0 +1,13 @@
+{
+  "name": "Vitraux-Visiteurs",
+  "version": "0.1.0",
+  "main": "index.html",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "ratchet": "^2.0.2"
+  },
+  "devDependencies": {}
+}
