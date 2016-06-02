@@ -3,15 +3,30 @@
     Author     : Yassine Doghri <http://yassine.doghri.fr>
 */
 
-input[type=search] {
-    border-radius: 0;
-    margin-bottom: 0;
+.search-bar {
+    .search {
+        border-radius: 0;
+        margin-bottom: 0;
+        padding-right: 35px;
+    }
+    span {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 9px;
+        color: #CCCCCC;
+    }
 }
 
-.comment-header {
-    margin-bottom: 10px;
-}
-
-.comment-view .table-view-cell {
-    padding-right: 15px;
+.course {
+    h2 {
+        font-size: 20px;
+        font-weight: 300;
+    }
+    .course-abstract {
+        div {
+            width: 50%;
+            float: left;
+        }
+    }
 }

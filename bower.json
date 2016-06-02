@@ -8,7 +8,9 @@
   ],
   "dependencies": {
     "ratchet": "^2.0.2",
-    "font-awesome": "fontawesome#^4.6.3"
+    "font-awesome": "fontawesome#^4.6.3",
+    "jquery": "^2.2.4",
+    "list.js": "^1.2.0"
   },
   "devDependencies": {}
 }
