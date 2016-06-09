@@ -6,89 +6,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="icon" href="assets/img/favicon.ico" />
+
         <link rel="stylesheet" href="bower_components/ratchet/dist/css/ratchet.min.css">
         <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="bower_components/roboto-fontface/css/roboto/roboto-fontface.css" />
         <link rel="stylesheet" href="assets/css/main.css">
     </head>
     <body>
         <header class="bar bar-nav">
-            <h1 class="title">Vitraux Visiteurs</h1>
+            <h1 class="title">Vitraux Visiteurs <span id="courses-num" class="badge">0</span></h1>
         </header>
         <div id="courses" class="content">
             <div class="search-bar">
                 <input type="search" class="search" placeholder="Rechercher un thème, une époque...">
                 <span class="fa fa-search" aria-hidden="true"></span>
             </div>
-            <ul class="table-view list">
-                <li class="table-view-cell course">
-                    <a class="navigate-right" href="#">
-                        <div class="media-body">
-                            <h2 class="course-title">Parcours "Moïse"</h2>
-                            <div class="course-abstract">
-                                <div>
-                                    <p class="distance">3,3 km</p>
-                                    <p class="locations">3 lieux</p>
-                                </div>
-                                <div>
-                                    <p class="duration">2h</p>
-                                    <p class="items">5 Vitraux</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="table-view-cell course">
-                    <a class="navigate-right" href="#">
-                        <div class="media-body">
-                            <h2 class="course-title">Parcours "Technique Narrative"</h2>
-                            <div class="course-abstract">
-                                <div>
-                                    <p class="distance">1,2 km</p>
-                                    <p class="locations">2 lieux</p>
-                                </div>
-                                <div>
-                                    <p class="duration">1h30</p>
-                                    <p class="items">15 Vitraux</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="table-view-cell course">
-                    <a class="navigate-right" href="#">
-                        <div class="media-body">
-                            <h2 class="course-title">Parcours "Début du XVI<sup>ème</sup> s."</h2>
-                            <div class="course-abstract">
-                                <div>
-                                    <p class="distance">700 m</p>
-                                    <p class="locations">1 lieux</p>
-                                </div>
-                                <div>
-                                    <p class="duration">30 min</p>
-                                    <p class="items">4 Vitraux</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="table-view-cell course">
-                    <a class="navigate-right" href="#">
-                        <div class="media-body">
-                            <h2 class="course-title">Parcours "Technique du Verre"</h2>
-                            <div class="course-abstract">
-                                <div>
-                                    <p class="distance">1,2 km</p>
-                                    <p class="locations">2 lieux</p>
-                                </div>
-                                <div>
-                                    <p class="duration">1h</p>
-                                    <p class="items">8 Vitraux</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-            </ul>
+            <ul class="table-view list"></ul>
         </div>
 
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
