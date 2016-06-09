@@ -1,20 +1,19 @@
 def isParcoursListComplete?()
-  has_css?(".findByKeywordHomepage")
-  has_css?(".parcoursButtonHomepage")
-  isParcoursButtonHomepageComplete?(#first(".parcoursButtonHomepage"))
+  has_css?(".search-bar")
+  has_css?(".table-view list")
+  isParcoursButtonHomepageComplete?(#first(".table-view list"))
 end
 
 def isParcoursButtonHomepageComplete?(parcoursButton)
-  parcoursButton.has_css?(".parcoursTitle")
-  parcoursButton.has_css?(".parcoursInfos")
+  parcoursButton.has_css?(".course-title")
+  parcoursButton.has_css?(".course-abstract")
 end
 
 
-def isParcoursPreviewComplete?()
-  has_css?(".titleParcoursPreview")
-  has_css?(".mapParcoursPreview")
-  has_css?(".infosParcoursPreview")
-  has_css?(".descriptionParcoursPreview")
-  has_css?(".reviewParcoursPreview")
-  has_css?(".startButtonParcoursPreview")
+def isParcoursPreviewComplete?(Title)
+  expect(page).to have_content Title
+  expect(page).to have_content 'maps'
+  expect(page).to have_content 'Description :'
+  expect(page).to have_content 'Avis :'
+  expect(page).to have_content 'Démarrer'
 end

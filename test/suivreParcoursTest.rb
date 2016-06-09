@@ -5,7 +5,7 @@ feature 'Suivre parcours' do
 	scenario 'Choisir Parcours' do
 		visit $home_page
     click_on ('Parcours "Moïse"')
-    isParcoursPreviewComplete?()
+    isParcoursPreviewComplete?('Parcours "Moïse"')
   end
 
 	scenario 'Recherche Parcours' do
