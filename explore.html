@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Parcours de l'église</title>
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!-- Include the compiled Ratchet CSS -->
+    <link href="dist/css/ratchet.css" rel="stylesheet">
+    <link href="myCSS.css" rel="stylesheet">
+
+    <!-- Include the compiled Ratchet JS -->
+    <script src="dist/js/ratchet.js"></script>
+
+    <script
+			  src="https://code.jquery.com/jquery-3.0.0.js"
+			  integrity="sha256-jrPLZ+8vDxt2FnE1zvZXCkCcebI/C8Dt5xyaQBjxQIo="
+			  crossorigin="anonymous"></script>
+
+  </head>
+
+  <script>
+
+  var checkPage = function(){
+    //Only run if twitter-widget exists on page
+  /*  if(document.getElementById('twitter-widget')) {
+        loadTwitterFeed(document,"script","twitter-wjs");
+    }
+    */
+getVitrailID();
+genererVitraux();
+var testObject = [false, false,false,false,false,false];
+var retrievedObject = localStorage.getItem('testObject');
+var found = JSON.parse(retrievedObject);
+for(i=0;i<testObject.length;i++){
+if(!testObject[i]){
+$('#'+(i+1)+' > button').hide();
+}
+
+}
+};
+
+window.addEventListener('push', checkPage);
+  </script>
+  <body>
+
+    <!-- Make sure all your bars are the first things in your <body> -->
+    <header class="bar bar-nav">
+      <h1 class="title"></h1>
+    </header>
+
+    <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
+    <div class="content">
+
+
+
+
+<ul class="table-view">
+</ul>
+    </div>
+<script src="explore.js"></script>
+  </body>
+</html>
