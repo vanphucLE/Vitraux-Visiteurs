@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <style type="text/css">
+            #map{width:700px;height:500px;margin:auto;}
+        </style>
+
+    </head>
+    <body>
+
+        <div id="map">
+            <p>Veuillez patienter pendant le chargement de la carte...</p>
+        </div>
+
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="assets/js/map.js"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?language=fr&libraries=places"></script>
+        <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+
+          <script>
+            waypoint =[];
+            initialize();
+             $.ajax({
+                    url: 'http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
+                    dataType: 'json',
+                    success: function(data) {
+                      for (var s of data.rows) {
+                        console.log("for");
+                        if (s.value.spatial) {
+                            var troyes = new google.maps.LatLng(48.2973725,4.0721523); 
+
+                            var request = {
+                            location: troyes,
+                            radius: '500',
+                            query: s.value.spatial
+                            };
+
+                          service = new google.maps.places.PlacesService(map);
+                          service.textSearch(request, callback);
+                        }
+                      }
+                    }
+                  });
+
+             function callback(results, status) {
+                  console.log("callback");
+                  if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    var place = results[0];
+                    if (place.formatted_address != "10000 Troyes, France" && place.formatted_address ){
+                    waypoint.push({
+                        location:place.formatted_address,
+                          stopover:true
+                        });
+                        if (waypoint.length>2) {
+                            calculate(waypoint[0].location,waypoint[waypoint.length-1].location, waypoint);
+                            console.log("waypoint"+JSON.stringify(waypoint));  
+                        }
+                    }
+                  }
+
+            }
+
+</script>
+    </body>
+</html>
