@@ -20,15 +20,30 @@
 
           <script>
             waypoint =[];
+            topicids = [];
             initialize();
-             $.ajax({
+
+            $.ajax({
+                url: 'http://argos2.hypertopic.org/topic/56e092d8a6179a788c74b618b29801c0/4991b7b717da9a4d8a769e8664b136a0',
+                dataType: 'json',
+                success: function(data) {
+                  for (var r of data.rows) {
+                    if (r.value.item) {
+                      topicids.push(r.value.item.id);
+                    } 
+                  }
+                  $.ajax({
                     url: 'http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
                     dataType: 'json',
                     success: function(data) {
                       for (var s of data.rows) {
-                        console.log("for");
-                        if (s.value.spatial) {
-                            var troyes = new google.maps.LatLng(48.2973725,4.0721523); 
+                        if (s.value.spatial && topicids.indexOf(s.key[1]) != -1) {
+
+                          if (s.value.spatial=="Église Saint-Remi, Troyes") {
+                            s.value.spatial="3 Place Saint-Remi 10000 Troyes";
+                          };
+
+                          var troyes = new google.maps.LatLng(48.2973725,4.0721523); 
 
                             var request = {
                             location: troyes,
@@ -38,16 +53,22 @@
 
                           service = new google.maps.places.PlacesService(map);
                           service.textSearch(request, callback);
+                          console.log("s.spatial"+JSON.stringify(s.value.spatial));  
+                          console.log("s.key1"+JSON.stringify(s.key[1]));
+                          console.log("topicids"+topicids);  
                         }
                       }
                     }
                   });
+                }
+            });
 
-             function callback(results, status) {
-                  console.log("callback");
+        
+
+function callback(results, status) {
+                  console.log("callback"+status);
                   if (status == google.maps.places.PlacesServiceStatus.OK) {
                     var place = results[0];
-                    if (place.formatted_address != "10000 Troyes, France" && place.formatted_address ){
                     waypoint.push({
                         location:place.formatted_address,
                           stopover:true
@@ -56,7 +77,6 @@
                             calculate(waypoint[0].location,waypoint[waypoint.length-1].location, waypoint);
                             console.log("waypoint"+JSON.stringify(waypoint));  
                         }
-                    }
                   }
 
             }
