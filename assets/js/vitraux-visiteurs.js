@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
-    var getUrl = window.location;
-    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+//    var getUrl = window.location;
+//    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
 //    window.addEventListener('push', getCourses());
     getCourses();
@@ -87,7 +87,7 @@ $(document).ready(function () {
                                     $('#courses-num').text(parseInt($('#courses-num').text()) + 1);
                                     topic_title = row.value.narrower.name;
                                     topic_id = row.value.narrower.id;
-                                    link = baseUrl + '/map.html?viewpoint=' + vp.id + '&topic=' + topic_id;
+                                    link = 'map.html?viewpoint=' + vp.id + '&topic=' + topic_id;
                                     courseList.add({
                                         'id': topic_id,
                                         'course-title': 'Parcours "' + topic_title + '"',
