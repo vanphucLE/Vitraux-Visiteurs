@@ -98,9 +98,7 @@
                         location: place.formatted_address,
                         stopover: true
                     });
-                    if (waypoint.length > 2) {
-                        calculate(waypoint[0].location, waypoint[waypoint.length - 1].location, waypoint);
-                    }
+                calculate(waypoint[0].location, waypoint[waypoint.length - 1].location, waypoint);
                 }
             }
         </script>
