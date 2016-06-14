@@ -54,6 +54,7 @@
 
             waypoint = [];
             topicids = [];
+            spatial = [];
             initialize();
             $.ajax({
                 url: 'http://argos2.hypertopic.org/topic/' + viewpoint + '/' + topic,
@@ -71,9 +72,13 @@
                         dataType: 'json',
                         success: function (data) {
                             $.each(data.rows, function (index, s) {
-                                if (s.value.spatial && topicids.indexOf(s.key[1]) !== -1) {
+                                if (s.value.spatial && topicids.indexOf(s.key[1]) !== -1 && spatial.indexOf(s.value.spatial)== -1 ) {
+                                    spatial.push(s.value.spatial);
+
                                     $('.table-view').append('<li class="table-view-cell"><a class="navigate-right" href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&eglise=' + s.value.spatial + '" data-transition="slide-out" data-ignore="push">' + s.value.spatial + '</a></li>');
                                     if (s.value.spatial === "Église Saint-Remi, Troyes") {
+                                        s.value.spatial = "3 Place Saint-Remi 10000 Troyes";
+                                    }else if (s.value.spatial === "Église Saint-Remy, Troyes"){
                                         s.value.spatial = "3 Place Saint-Remi 10000 Troyes";
                                     }
 
