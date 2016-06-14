@@ -2,9 +2,11 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <link rel="icon" href="assets/img/favicon.ico" />
+
         <link rel="stylesheet" href="bower_components/ratchet/dist/css/ratchet.min.css">
         <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="bower_components/roboto-fontface/css/roboto/roboto-fontface.css" />
@@ -14,96 +16,93 @@
         </style>
 
     </head>
-    <body class="content">
+    <body>
         <header class="bar bar-nav">
-            <a class="icon icon-left-nav pull-left"  href="#null" onclick="javascript:history.back();"></a>
+            <a class="icon icon-left-nav pull-left" href="courses.html" data-transition="slide-out" data-ignore="push"></a>
             <h1 class="title"></h1>
         </header>
-
-        <div id="map">
-            <p>Veuillez patienter pendant le chargement de la carte...</p>
+        <div class="content">
+            <div id="map">
+                <p>Veuillez patienter pendant le chargement de la carte...</p>
+            </div>
+            <div class="card">
+                <ul class="table-view"></ul>
+            </div>
         </div>
-
-        <ul class="table-view"></ul>
-
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/ratchet/dist/js/ratchet.js"></script>
         <script src="assets/js/map.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?language=fr&libraries=places"></script>
-        <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
 
-          <script>
-          topic = '4991b7b717da9a4d8a769e8664b136a0';
-          viewpoint = '56e092d8a6179a788c74b618b29801c0';
-          $('.title').append('Parcours Moïse');
+        <script>
+            var getUrlParameter = function getUrlParameter(sParam) {
+                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                        sURLVariables = sPageURL.split('&'),
+                        sParameterName,
+                        i;
 
-          waypoint =[];
-          topicids = [];
-          initialize();
+                for (i = 0; i < sURLVariables.length; i++) {
+                    sParameterName = sURLVariables[i].split('=');
 
-
-            $.ajax({
-                url: 'http://argos2.hypertopic.org/topic/'+viewpoint+'/'+topic,
-                dataType: 'json',
-                success: function(data) {
-                  for (var r of data.rows) {
-                    if (r.value.item) {
-                      topicids.push(r.value.item.id);
-                    } 
-                  }
-                  $.ajax({
-                    url: 'http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
-                    dataType: 'json',
-                    success: function(data) {
-                      for (var s of data.rows) {
-                        if (s.value.spatial && topicids.indexOf(s.key[1]) != -1) {
-
-                        $('.table-view').append('<li class="table-view-cell"><a class="navigate-right" href="explore.html?topic='+topic+'&viewpoint='+viewpoint+'&eglise='+s.value.spatial+'">'+s.value.spatial+'</a></li>');
-                        
-                          if (s.value.spatial=="Église Saint-Remi, Troyes") {
-                            s.value.spatial="3 Place Saint-Remi 10000 Troyes";
-                          }
-
-
-
-                          var troyes = new google.maps.LatLng(48.2973725,4.0721523); 
-
-                            var request = {
-                            location: troyes,
-                            radius: '500',
-                            query: s.value.spatial
-                            };
-
-
-                          service = new google.maps.places.PlacesService(map);
-                          service.textSearch(request, callback);
-                          console.log("s.spatial"+JSON.stringify(s.value.spatial));  
-                          console.log("s.key1"+JSON.stringify(s.key[1]));
-                          console.log("topicids"+topicids);  
-                        }
-                      }
+                    if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : sParameterName[1];
                     }
-                  });
+                }
+            };
+            viewpoint = getUrlParameter('viewpoint');
+            topic = getUrlParameter('topic');
+
+            waypoint = [];
+            topicids = [];
+            initialize();
+            $.ajax({
+                url: 'http://argos2.hypertopic.org/topic/' + viewpoint + '/' + topic,
+                dataType: 'json',
+                success: function (data) {
+                    $.each(data.rows, function (index, r) {
+                        if (r.value.item) {
+                            topicids.push(r.value.item.id);
+                        } else if (r.value.name) {
+                            $('.title').text('Parcours' + ' "' + r.value.name + '"');
+                        }
+                    });
+                    $.ajax({
+                        url: 'http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
+                        dataType: 'json',
+                        success: function (data) {
+                            $.each(data.rows, function (index, s) {
+                                if (s.value.spatial && topicids.indexOf(s.key[1]) !== -1) {
+                                    $('.table-view').append('<li class="table-view-cell"><a class="navigate-right" href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&eglise=' + s.value.spatial + '" data-transition="slide-out" data-ignore="push">' + s.value.spatial + '</a></li>');
+                                    if (s.value.spatial === "Église Saint-Remi, Troyes") {
+                                        s.value.spatial = "3 Place Saint-Remi 10000 Troyes";
+                                    }
+
+                                    var troyes = new google.maps.LatLng(48.2973725, 4.0721523);
+                                    var request = {
+                                        location: troyes,
+                                        radius: '500',
+                                        query: s.value.spatial
+                                    };
+                                    service = new google.maps.places.PlacesService(map);
+                                    service.textSearch(request, callback);
+                                }
+                            });
+                        }
+                    });
                 }
             });
-
-        
-
             function callback(results, status) {
-                              console.log("callback"+status);
-                              if (status == google.maps.places.PlacesServiceStatus.OK) {
-                                var place = results[0];
-                                waypoint.push({
-                                    location:place.formatted_address,
-                                      stopover:true
-                                    });
-                                    if (waypoint.length>2) {
-                                        calculate(waypoint[0].location,waypoint[waypoint.length-1].location, waypoint);
-                                        console.log("waypoint"+JSON.stringify(waypoint));  
-                                    }
-                              }
-
-                        }
-
-          </script>
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    var place = results[0];
+                    waypoint.push({
+                        location: place.formatted_address,
+                        stopover: true
+                    });
+                    if (waypoint.length > 2) {
+                        calculate(waypoint[0].location, waypoint[waypoint.length - 1].location, waypoint);
+                    }
+                }
+            }
+        </script>
     </body>
 </html>
