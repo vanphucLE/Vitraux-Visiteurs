@@ -36,10 +36,3 @@ function calculate (origin,destination,waypoints){
             }
         });
 };
-
-function uniq(a) {
-  var seen = {};
-  return a.filter(function (item) {
-  return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-   });
-}
