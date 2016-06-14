@@ -32,6 +32,8 @@
         <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
 
           <script>
+          topic = '4991b7b717da9a4d8a769e8664b136a0';
+          viewpoint = '56e092d8a6179a788c74b618b29801c0';
           $('.title').append('Parcours Moïse');
 
           waypoint =[];
@@ -40,7 +42,7 @@
 
 
             $.ajax({
-                url: 'http://argos2.hypertopic.org/topic/56e092d8a6179a788c74b618b29801c0/4991b7b717da9a4d8a769e8664b136a0',
+                url: 'http://argos2.hypertopic.org/topic/'+viewpoint+'/'+topic,
                 dataType: 'json',
                 success: function(data) {
                   for (var r of data.rows) {
@@ -54,11 +56,14 @@
                     success: function(data) {
                       for (var s of data.rows) {
                         if (s.value.spatial && topicids.indexOf(s.key[1]) != -1) {
+
+                        $('.table-view').append('<li class="table-view-cell"><a class="navigate-right" href="explore.html?topic='+topic+'&viewpoint='+viewpoint+'&eglise='+s.value.spatial+'">'+s.value.spatial+'</a></li>');
+                        
                           if (s.value.spatial=="Église Saint-Remi, Troyes") {
                             s.value.spatial="3 Place Saint-Remi 10000 Troyes";
                           }
 
-                          $('.table-view').append('<li class="table-view-cell"><a class="navigate-right" href="/explore.html?topic='+s.key[1]+'&viewpoint=56e092d8a6179a788c74b618b29801c0&eglise='+s.value.spatial+'">'+s.value.spatial+'</a></li>');
+
 
                           var troyes = new google.maps.LatLng(48.2973725,4.0721523); 
 
