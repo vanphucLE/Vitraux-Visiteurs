@@ -7,26 +7,10 @@ and open the template in the editor.
     Created on : 10 juin 2016, 00:54:33
     Author     : Maxime Couture
 */
-body{
-    margin:0;
-    padding: 0;
-    border: 0;
-    background-color: #fafafa;
-}
-header.bar{
-    height: 30px;
-    background: rgba(255,255,255,0.2);
-    padding-top: 5px;
-    font-size: 20px;
-}
+
 
 div.header{
-    background-color: transparent;
     text-transform: uppercase;
-}
-
-#nom_vitrail{
-    margin-left: 15px;
 }
 
 section.first{
@@ -51,12 +35,41 @@ img{
     max-height: 100%;
 }
 
-.thumbnail-container:after{
-    font-family: 'FontAwesome';
-    content: "\f002";
-    font-size: 30px;
-    position : relative;
-    top : -30px;
-    left : 87%;
-    color : #666;
+.overlay-text{
+	color: #fff;
+	margin: 0;
+	position: absolute;
+	top: 30%;
+	text-align: center;
+	text-transform: uppercase;
+	z-index: 20;
+	bottom: 0;
+	left: 0;
+	margin: 0;
+	transition: all 0.3s ease;
+  }
+  
+  
+ .overlay-text img{
+	max-width : 50%;
 }
+
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	background: #000;
+	z-index: 10;
+	opacity: 0.4;
+	transition: opacity 0.15s ease-out;
+	backface-visibility: hidden;
+	font-family: 'FontAwesome';
+	content: "\f002";
+	color : #aaa;
+	font-size : 30px;
+}
+.overlay:hover, .overlay-text:hover {
+		opacity: 0;
+	

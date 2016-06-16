@@ -12,12 +12,12 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
         <!-- Include the compiled Ratchet CSS -->
-        <link href="dist/css/ratchet.min.css" rel="stylesheet">
-        <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+        <link href="assets/css/ratchet.min.css" rel="stylesheet">
         <link href="assets/css/style.css" rel="stylesheet">
+		<link href="assets/css/font-awesome.css" rel="stylesheet">
 
         <!-- Include the compiled Ratchet JS -->
-        <script src="dist/js/ratchet.min.js"></script> 
+        <script src="assets/js/ratchet.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     </head>
     <body>
@@ -25,7 +25,8 @@
         <!-- Make sure all your bars are the first things in your <body> -->
         <header class="bar bar-nav">
             <div class="header">
-                <i class="fa fa-chevron-left"></i><span id="nom_vitrail">Nom Vitrail</span>
+				<a class="icon icon-left-nav pull-left"></a>
+                <h1 class="title"><span id="nom_vitrail">Sans Nom</span></h1>
             </div>
         </header>
 
@@ -33,7 +34,12 @@
         <div class="content">
             <section class="first">
                 <div class="thumbnail-container">
-                    <img class="zoomable thumbnail" src="http://steatite.hypertopic.org/thumbnail/90448b0f2f3048db95b86119e3625fc453060f1b"  />
+					<a id="img-resource" href="">
+						<div class="overlay-text">
+							<img src="search.png" /> 
+						</div>
+						<img id="thumb_vitrail" class="zoomable thumbnail" src=""  />
+					</a>
                 </div>
                 <div class="social">
                     <i class="fa fa-facebook-square fa-2x"></i>
@@ -48,21 +54,79 @@
 
     </body>
     <script>
- /*       var xdr = new XMLHttpRequest();
-        xdr.onload = function () {
-            console.log(xdr.responseText);
-        };
-        xdr.open("GET", "http://steatite.hypertopic.org/item/Vitraux - Bénel/<?php //echo $id; ?>");
-        xdr.setRequestHeader("Content-Type", "application/jsonp");
-        xdr.send();*/
-        
+		function getUrlVars() {
+			var vars = {};
+			var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+				vars[key] = value;
+			});
+			return vars;
+		}
+		
+		function adaptOverlay(){
+			var imgwidth = $("#thumb_vitrail").width();
+			var imgheight = $("#thumb_vitrail").height();
+			$(".overlay").css("width",imgwidth);
+			$(".overlay-text").css("width",imgwidth);
+			$(".overlay").css("height",imgheight);
+		}
+	
+		var id = "8e638d3d8243f97942f3fcb267daeeafe9dc29ea";
+		var id = getUrlVars()["id"];
+		console.log(getUrlVars());
         $.ajax({
-            url : "http://steatite.hypertopic.org/item/Vitraux - Bénel/<?php echo $id; ?>",  
+            url : "http://steatite.hypertopic.org/corpus/Vitraux - Bénel",  
             type : "GET",
             dataType: 'json',
             success: function(data){
-                alert();
+                for (var i in data["rows"]){
+					if (data["rows"][i]["key"][1] == id ){
+						if (typeof data["rows"][i]["value"]["name"] != 'undefined')
+							name = data["rows"][i]["value"]["name"];
+						if (typeof data["rows"][i]["value"]["thumbnail"] != 'undefined')
+							thumb = data["rows"][i]["value"]["thumbnail"];
+						if (typeof data["rows"][i]["value"]["resource"] != 'undefined')
+							img = data["rows"][i]["value"]["resource"];
+					}
+				}
+				if ($("span#nom_vitrail").html() !="Sans Nom" ){
+					$("span#nom_vitrail").html(name);
+				}
+				$("img#thumb_vitrail").prop("src",thumb);
+				$("a#img-resource").prop("href",img);
+				setTimeout(adaptOverlay(),1000);
             }
         });
-    </script>
+		$.ajax({
+			url :"http://argos2.hypertopic.org/viewpoint/56e092d8a6179a788c74b618b29801c0",
+			type : "GET",
+            dataType: 'json',
+			success: function(data){
+				for (var i in data["rows"]){
+					if (typeof data["rows"][i]["value"]["item"] != 'undefined'){
+						if (data["rows"][i]["value"]["item"]["id"] == id ){
+							if (typeof data["rows"][i]["value"]["item"]["name"] != 'undefined')
+								name = data["rows"][i]["value"]["item"]["name"];
+						}
+					}
+				}
+				$("span#nom_vitrail").html(name);				
+			}
+		});
+		$.ajax({
+			url :"http://argos2.hypertopic.org/viewpoint/a76306e4f17ed4f79e7e481eb9a1bd06",
+			type : "GET",
+            dataType: 'json',
+			success: function(data){
+				for (var i in data["rows"]){
+					if (typeof data["rows"][i]["value"]["item"] != 'undefined'){
+						if (data["rows"][i]["value"]["item"]["id"] == id ){
+							if (typeof data["rows"][i]["value"]["item"]["name"] != 'undefined')
+								name = data["rows"][i]["value"]["item"]["name"];
+						}
+					}
+				}
+				$("span#nom_vitrail").html(name);
+			}
+		});
+	</script>
 </html>
