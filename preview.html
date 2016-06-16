@@ -13,11 +13,34 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="dist/css/ratchet.css" rel="stylesheet">
-    <link href="myCSS.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link href="assets/css/explore.css" rel="stylesheet">
 
     <!-- Include the compiled Ratchet JS -->
     <script src="dist/js/ratchet.js"></script>
+
+    <script
+        src="https://code.jquery.com/jquery-3.0.0.js"
+        integrity="sha256-jrPLZ+8vDxt2FnE1zvZXCkCcebI/C8Dt5xyaQBjxQIo="
+        crossorigin="anonymous"></script>
   </head>
+  <script>
+
+  var checkPage = function(){
+
+if($('#trouve').length){
+  getVitrailID();
+}
+if($('.table-view').length){
+  genererVitraux();
+}
+
+
+
+};
+
+window.addEventListener('push', checkPage);
+  </script>
   <body>
 
     <!-- Make sure all your bars are the first things in your <body> -->
@@ -29,15 +52,17 @@
 Retour
 </button>
  </a>
-<a class="tab-item" href="explore.html">
+<a id="trouve" class="tab-item" >
  Je l'ai trouvé
   </a>
     </header>
-
+    <header class="bar bar-nav">
+      <h1 class="title"></h1>
+    </header>
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
 
-  <img class='preview_image' src="">
+  <img class='preview_image'  src="">
 
       <!-- <div class="slider" id="mySlider">
         <div class="slide-group">
@@ -53,6 +78,6 @@ Retour
       </div>-->
 
     </div>
-
+<script src="assets/js/explore.js"></script>
   </body>
 </html>

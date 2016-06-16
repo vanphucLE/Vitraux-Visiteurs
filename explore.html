@@ -13,7 +13,9 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="dist/css/ratchet.css" rel="stylesheet">
-    <link href="myCSS.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link href="assets/css/explore.css" rel="stylesheet">
 
     <!-- Include the compiled Ratchet JS -->
     <script src="dist/js/ratchet.js"></script>
@@ -28,28 +30,29 @@
   <script>
 
   var checkPage = function(){
-    //Only run if twitter-widget exists on page
-  /*  if(document.getElementById('twitter-widget')) {
-        loadTwitterFeed(document,"script","twitter-wjs");
-    }
-    */
-getVitrailID();
-genererVitraux();
-var testObject = [false, false,false,false,false,false];
-var retrievedObject = localStorage.getItem('testObject');
-var found = JSON.parse(retrievedObject);
-for(i=0;i<testObject.length;i++){
-if(!testObject[i]){
-$('#'+(i+1)+' > button').hide();
+
+if($('#trouve').length){
+  getVitrailID();
+}
+if($('.table-view').length){
+  genererVitraux();
 }
 
-}
+
+
 };
 
 window.addEventListener('push', checkPage);
   </script>
   <body>
-
+    <header class="bar bar-tab">
+    <a id="retour" class="tab-item" href="map.html">
+    <button class="btn btn-link btn-nav pull-left">
+    <span class="icon icon-left-nav"></span>
+    Retour
+    </button>
+    </a>
+    </header>
     <!-- Make sure all your bars are the first things in your <body> -->
     <header class="bar bar-nav">
       <h1 class="title"></h1>
@@ -64,6 +67,6 @@ window.addEventListener('push', checkPage);
 <ul class="table-view">
 </ul>
     </div>
-<script src="explore.js"></script>
+<script src="assets/js/explore.js"></script>
   </body>
 </html>
