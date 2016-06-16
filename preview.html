@@ -15,7 +15,8 @@
     <link href="bower_components/ratchet/dist/css/ratchet.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
     <link href="assets/css/explore.css" rel="stylesheet">
-
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="bower_components/font-awesome/css/font-awesome.css" rel="stylesheet">
     <!-- Include the compiled Ratchet JS -->
     <script src="bower_components/ratchet/dist/js/ratchet.js"></script>
 
@@ -34,6 +35,9 @@ if($('#trouve').length){
 if($('.table-view').length){
   genererVitraux();
 }
+if($('#to_church').length){
+  description();
+}
 
 
 
@@ -45,18 +49,12 @@ window.addEventListener('push', checkPage);
 
     <!-- Make sure all your bars are the first things in your <body> -->
     <header class="bar bar-tab">
-
- <a id="retour" class="tab-item" href="explore.html">
-   <button class="btn btn-link btn-nav pull-left">
-<span class="icon icon-left-nav"></span>
-Retour
-</button>
- </a>
 <a id="trouve" class="tab-item" >
  Je l'ai trouvé
   </a>
     </header>
     <header class="bar bar-nav">
+      	<a id="retour" class="icon icon-left-nav pull-left" href="explore.html"></a>
       <h1 class="title"></h1>
     </header>
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
@@ -79,5 +77,6 @@ Retour
 
     </div>
 <script src="assets/js/explore.js"></script>
+<script src="assets/js/description.js"></script>
   </body>
 </html>

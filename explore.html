@@ -14,9 +14,10 @@
     <!-- Include the compiled Ratchet CSS -->
     <link href="bower_components/ratchet/dist/css/ratchet.css" rel="stylesheet">
 
+    <link href="bower_components/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
     <link href="assets/css/explore.css" rel="stylesheet">
-
+<link href="assets/css/style.css" rel="stylesheet">
     <!-- Include the compiled Ratchet JS -->
     <script src="bower_components/ratchet/dist/js/ratchet.js"></script>
 
@@ -37,6 +38,9 @@ if($('#trouve').length){
 if($('.table-view').length){
   genererVitraux();
 }
+if($('#to_church').length){
+  description();
+}
 
 
 
@@ -45,16 +49,10 @@ if($('.table-view').length){
 window.addEventListener('push', checkPage);
   </script>
   <body>
-    <header class="bar bar-tab">
-    <a id="retour" class="tab-item" href="map.html" data-ignore="push">
-    <button class="btn btn-link btn-nav pull-left">
-    <span class="icon icon-left-nav"></span>
-    Retour
-    </button>
-    </a>
-    </header>
+
     <!-- Make sure all your bars are the first things in your <body> -->
     <header class="bar bar-nav">
+      	<a id="retour" class="icon icon-left-nav pull-left" href="map.html" data-ignore="push"></a>
       <h1 class="title"></h1>
     </header>
 
@@ -68,5 +66,6 @@ window.addEventListener('push', checkPage);
 </ul>
     </div>
 <script src="assets/js/explore.js"></script>
+<script src="assets/js/description.js"></script>
   </body>
 </html>
