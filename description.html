@@ -25,7 +25,7 @@
         <!-- Make sure all your bars are the first things in your <body> -->
         <header class="bar bar-nav">
             <div class="header">
-				<a class="icon icon-left-nav pull-left"></a>
+				<a id="to_church" class="icon icon-left-nav pull-left"></a>
                 <h1 class="title"><span id="nom_vitrail">Sans Nom</span></h1>
             </div>
         </header>
@@ -69,10 +69,12 @@
 			$(".overlay-text").css("width",imgwidth);
 			$(".overlay").css("height",imgheight);
 		}
-	
-		var id = "8e638d3d8243f97942f3fcb267daeeafe9dc29ea";
+		
 		var id = getUrlVars()["id"];
-		console.log(getUrlVars());
+		var eglise = getUrlVars()["eglise"];
+		var viewpoint = getUrlVars()["viewpoint"];
+		var topic = getUrlVars()["topic"];
+		$("a#topic").prop("href","explore.html?topic=" + topic + "&viewpoint=" + viewpoint + "&eglise=" + eglise );
         $.ajax({
             url : "http://steatite.hypertopic.org/corpus/Vitraux - Bénel",  
             type : "GET",
