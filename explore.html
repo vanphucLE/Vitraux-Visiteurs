@@ -12,13 +12,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
     <!-- Include the compiled Ratchet CSS -->
-    <link href="dist/css/ratchet.css" rel="stylesheet">
+    <link href="bower_components/ratchet/dist/css/ratchet.css" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/main.css">
     <link href="assets/css/explore.css" rel="stylesheet">
 
     <!-- Include the compiled Ratchet JS -->
-    <script src="dist/js/ratchet.js"></script>
+    <script src="bower_components/ratchet/dist/js/ratchet.js"></script>
 
     <script
 			  src="https://code.jquery.com/jquery-3.0.0.js"
@@ -46,7 +46,7 @@ window.addEventListener('push', checkPage);
   </script>
   <body>
     <header class="bar bar-tab">
-    <a id="retour" class="tab-item" href="map.html">
+    <a id="retour" class="tab-item" href="map.html" data-ignore="push">
     <button class="btn btn-link btn-nav pull-left">
     <span class="icon icon-left-nav"></span>
     Retour
