@@ -26,7 +26,6 @@ function getCourseMap() {
                 url: 'http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
                 dataType: 'json',
                 success: function (data) {
-                    // First, remove any existing markers from the map.
                     $.each(data.rows, function (index, s) {
                         if (s.value.spatial && topicids.indexOf(s.key[1]) !== -1 && spatial.indexOf(s.value.spatial) === -1) {
                             spatial.push(s.value.spatial);

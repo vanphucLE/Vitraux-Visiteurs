@@ -36,7 +36,7 @@ Care to know more about Bower? [Bower docs](http://bower.io/docs/api/)
 ## Using Grunt
 
 If you want to configure or use the project tasks, [install Grunt](http://gruntjs.com/getting-started)
-The Gruntfile.js is setup to launch the following task(s) :
+The Gruntfile.js is setup to launch the following task(s) with the `grunt` command:
 
 * [Uglify](https://github.com/gruntjs/grunt-contrib-uglify) to compress and mangle javascript files into vitraux-visiteurs.min.js
 
@@ -64,5 +64,5 @@ This is a school project for the [University of Technology of Troyes
 
 ## Copyright and licence
 
-Code and documentation copyright 2016 Hypertopic.
-// TO DO - project licence
+Code and documentation copyright 2016 Hypertopic.  
+// TO DO - Project licence.

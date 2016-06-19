@@ -6,12 +6,12 @@ module.exports = function (grunt) {
             my_target: {
                 files: {
                     'assets/js/vitraux-visiteurs.min.js': [
-                        'assets/js/main.js',
-                        'assets/js/courses.js',
-                        'assets/js/map.js',
-                        'assets/js/explore.js',
-                        'assets/js/preview.js',
-                        'assets/js/description.js'
+                        'assets/js/partials/_main.js',
+                        'assets/js/partials/_courses.js',
+                        'assets/js/partials/_map.js',
+                        'assets/js/partials/_explore.js',
+                        'assets/js/partials/_preview.js',
+                        'assets/js/partials/_description.js'
                     ]
                 }
             }

@@ -1,4 +1,3 @@
-
 function getVitrailId() {
     var id = getUrlParameter("id");
     var topic = getUrlParameter("topic");
@@ -32,4 +31,3 @@ function found(id, spatial, topic, viewpoint) {
     localStorage.setItem(id, true);
     PUSH({url: 'description.html?id=' + id + '&' + 'topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + spatial, transition: 'slide-in'});
 }
-

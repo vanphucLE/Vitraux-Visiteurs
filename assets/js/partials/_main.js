@@ -13,6 +13,33 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
 };
 
+var uniq = function (a) {
+    var seen = {};
+    return a.filter(function (item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+};
+
+var getItemText = function (count, sing, plur) {
+    return (count === 1) ? sing : plur;
+};
+
+var getCourseDuration = function (total_min) {
+    var hours = Math.floor(total_min / 60);
+    var minutes = total_min % 60;
+    if (hours === 0) {
+        if (minutes === 0) {
+            return '0';
+        }
+        return minutes + ' min';
+    } else {
+        if (minutes === 0) {
+            return hours + ' h';
+        }
+        return hours + 'h' + minutes;
+    }
+};
+
 var checkPage = function () {
     var page = $('div.content').attr('id');
     switch (page) {

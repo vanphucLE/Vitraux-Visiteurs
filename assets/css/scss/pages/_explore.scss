@@ -14,3 +14,14 @@
     width: 50%;
     text-align: center;
 }
+
+.place-info {
+    padding-top: 15px;
+    padding-right: 15px;
+    .place-name {
+        text-align: center;
+    }
+    p {
+        text-align: justify;
+    }
+}

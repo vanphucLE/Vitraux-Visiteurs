@@ -69,11 +69,13 @@ function getLocationVitraux() {
                         var selector = $("#" + c.key[1]);
                         if (selector.length) {
                             selector.remove();
-                            console.log(selector);
                         }
                     }
                 }
             });
+            var nbItems = $("#stainted-glass-windows li").length - 1;
+            $("#text-info-vitraux1").text(getItemText(nbItems, "le vitrail", "les vitraux"));
+            $("#text-info-vitraux2").text(getItemText(nbItems, "le", "les"));
         }
     });
 }

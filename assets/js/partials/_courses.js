@@ -115,7 +115,7 @@ function getCoursesList() {
                                 });
                                 locations = uniq(locations);
                                 var locations_nb = locations.length;
-                                var duration = getParsedDuration(locations_nb * 30);
+                                var duration = getCourseDuration(locations_nb * 30);
                                 item.values({
                                     'locations': locations_nb + ' ' + getItemText(locations_nb, "Lieu", "Lieux"),
                                     'duration': duration
@@ -127,31 +127,4 @@ function getCoursesList() {
             });
         }
     });
-}
-
-function uniq(a) {
-    var seen = {};
-    return a.filter(function (item) {
-        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-    });
-}
-
-function getItemText(count, sing, plur) {
-    return (count === 1) ? sing : plur;
-}
-
-function getParsedDuration(total_min) {
-    var hours = Math.floor(total_min / 60);
-    var minutes = total_min % 60;
-    if (hours === 0) {
-        if (minutes === 0) {
-            return '0';
-        }
-        return minutes + ' min';
-    } else {
-        if (minutes === 0) {
-            return hours + ' h';
-        }
-        return hours + 'h' + minutes;
-    }
 }
