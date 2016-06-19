@@ -8,6 +8,7 @@ and history of stained-glass windows in Troyes, France.
 * [Setting up the development environment](#setting-up-the-development-environment)
 * [Adding packages as dependencies](#adding-packages-as-dependencies)
 * [Using Grunt](#using-grunt)
+* [Versioning](#versioning)
 * [Creators](#creators)
 * [Copyright and licence](#copyright-and-licence)
 
@@ -39,6 +40,10 @@ If you want to configure or use the project tasks, [install Grunt](http://gruntj
 The Gruntfile.js is setup to launch the following task(s) with the `grunt` command:
 
 * [Uglify](https://github.com/gruntjs/grunt-contrib-uglify) to compress and mangle javascript files into vitraux-visiteurs.min.js
+
+## Versioning
+
+Vitraux Visiteurs is maintained under [the Semantic Versioning guidelines](http://semver.org/).
 
 ## Creators
 
