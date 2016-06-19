@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Vitraux Visiteurs | En savoir plus</title>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="icon" href="assets/img/favicon.ico" />
+
+        <link rel="stylesheet" href="bower_components/ratchet/dist/css/ratchet.min.css">
+        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="bower_components/roboto-fontface/css/roboto/roboto-fontface.css" />
+        <link rel="stylesheet" href="assets/css/main.css">
+    </head>
+    <body>
+        <header class="bar bar-nav">
+            <div class="header">
+                <a id="back" class="icon icon-left-nav pull-left" data-transition="slide-out"></a>
+                <h1 class="title"></h1>
+            </div>
+        </header>
+
+        <div id="description-page" class="content">
+            <div class="content-padded">
+                <a id="vitrail-thumbnail" href="#vitrailModal" data-ignore="push">
+                    <span class="fa fa-search fa-2x"></span>
+                    <img class="thumbnail" src="" alt="Vitrail Thumbnail"/>
+                </a>
+                <div class="social pull-right">
+                    <a href="#"><span class="fa fa-facebook-square fa-2x"></span></a>
+                    <a href="#"><span class="fa fa-google-plus-square fa-2x"></span></a>
+                    <a href="#"><span class="fa fa-twitter-square fa-2x"></span></a>
+                </div>
+            </div>
+            <p class="content-padded description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim</p>
+            <div id="vitrailModal" class="modal">
+                <header class="bar bar-nav">
+                    <a class="icon icon-close pull-right" href="#vitrailModal"></a>
+                    <h1 class="title"></h1>
+                </header>
+                <div class="content">
+                    <img id="vitrail-resource" src="" alt="" />
+                    <a href="#" class="btn btn-block btn-outlined" target="_blank"><span class="fa fa-external-link"></span> Ouvrir dans un nouvel onglet</a>
+                </div>
+            </div>
+        </div>
+
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/ratchet/dist/js/ratchet.min.js"></script>
+        <script src="assets/js/vitraux-visiteurs.min.js"></script>
+    </body>
+</html>
