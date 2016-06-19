@@ -1,82 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Preview</title>
+    <head>
+        <meta charset="utf-8">
+        <title>Vitraux Visiteurs | Preview</title>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="icon" href="assets/img/favicon.ico" />
 
-    <!-- Sets initial viewport load and disables zooming  -->
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-
-    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-    <!-- Include the compiled Ratchet CSS -->
-    <link href="bower_components/ratchet/dist/css/ratchet.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link href="assets/css/explore.css" rel="stylesheet">
-    <link href="assets/css/style.css" rel="stylesheet">
-    <link href="bower_components/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <!-- Include the compiled Ratchet JS -->
-    <script src="bower_components/ratchet/dist/js/ratchet.js"></script>
-
-    <script
-        src="https://code.jquery.com/jquery-3.0.0.js"
-        integrity="sha256-jrPLZ+8vDxt2FnE1zvZXCkCcebI/C8Dt5xyaQBjxQIo="
-        crossorigin="anonymous"></script>
-  </head>
-  <script>
-
-  var checkPage = function(){
-
-if($('#trouve').length){
-  getVitrailID();
-}
-if($('.table-view').length){
-  genererVitraux();
-}
-if($('#to_church').length){
-  description();
-}
-
-
-
-};
-
-window.addEventListener('push', checkPage);
-  </script>
-  <body>
-
-    <!-- Make sure all your bars are the first things in your <body> -->
-    <header class="bar bar-tab">
-<a id="trouve" class="tab-item" >
- Je l'ai trouvé
-  </a>
-    </header>
-    <header class="bar bar-nav">
-      	<a id="retour" class="icon icon-left-nav pull-left" href="explore.html"></a>
-      <h1 class="title"></h1>
-    </header>
-    <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
-    <div class="content">
-
-  <img class='preview_image'  src="">
-
-      <!-- <div class="slider" id="mySlider">
-        <div class="slide-group">
-          <div class="slide">
-
-            <span class="slide-text">
-              <span class="icon icon-left-nav"></span>
-              Retour
-            </span>
-          </div>
-
+        <link href="bower_components/ratchet/dist/css/ratchet.css" rel="stylesheet">
+        <link href="bower_components/font-awesome/css/font-awesome.css" rel="stylesheet">
+        <link href="assets/css/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <header class="bar bar-nav">
+            <a id="back" class="icon icon-left-nav pull-left" href="#" data-transition="slide-out"></a>
+            <h1 class="title"></h1>
+        </header>
+        <div id="preview-page" class="content">
+            <img class="preview-img" src="" alt="">
+            <a href="#" id="found-btn" class="btn btn-positive btn-block btn-outlined" data-transition="slide-in">Je l'ai trouvé !</a>
         </div>
-      </div>-->
-
-    </div>
-<script src="assets/js/explore.js"></script>
-<script src="assets/js/description.js"></script>
-  </body>
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/ratchet/dist/js/ratchet.min.js"></script>
+        <script src="assets/js/vitraux-visiteurs.min.js"></script>
+    </body>
 </html>

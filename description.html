@@ -2,82 +2,52 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Ratchet template page</title>
-
-        <!-- Sets initial viewport load and disables zooming  -->
+        <title>Vitraux Visiteurs | En savoir plus</title>
         <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-
-        <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="icon" href="assets/img/favicon.ico" />
 
-        <!-- Include the compiled Ratchet CSS -->
-        <link href="bower_components/ratchet/dist/css/ratchet.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="bower_components/ratchet/dist/css/ratchet.min.css">
+        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="bower_components/roboto-fontface/css/roboto/roboto-fontface.css" />
         <link rel="stylesheet" href="assets/css/main.css">
-          <link href="assets/css/explore.css" rel="stylesheet">
-        <link href="assets/css/style.css" rel="stylesheet">
-		<link href="bower_components/font-awesome/css/font-awesome.css" rel="stylesheet">
-
-        <!-- Include the compiled Ratchet JS -->
-        <script src="bower_components/ratchet/dist/js/ratchet.min.js"></script>
-        <script
-    			  src="https://code.jquery.com/jquery-3.0.0.js"
-    			  integrity="sha256-jrPLZ+8vDxt2FnE1zvZXCkCcebI/C8Dt5xyaQBjxQIo="
-    			  crossorigin="anonymous"></script>
     </head>
-    <script>
-
-    var checkPage = function(){
-
-  if($('#trouve').length){
-    getVitrailID();
-  }
-  if($('.table-view').length){
-    genererVitraux();
-  }
-  if($('#to_church').length){
-    description();
-  }
-
-
-
-  };
-
-  window.addEventListener('push', checkPage);
-    </script>
     <body>
-
-        <!-- Make sure all your bars are the first things in your <body> -->
         <header class="bar bar-nav">
             <div class="header">
-				<a id="to_church" class="icon icon-left-nav pull-left"></a>
-                <h1 class="title"><span id="nom_vitrail">Sans Nom</span></h1>
+                <a id="back" class="icon icon-left-nav pull-left" data-transition="slide-out"></a>
+                <h1 class="title"></h1>
             </div>
         </header>
 
-        <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
-        <div class="content">
-            <section class="first">
-                <div class="thumbnail-container">
-					<a id="img-resource" href="">
-						<div class="overlay-text">
-							<img src="assets/img/search.png" />
-						</div>
-						<img id="thumb_vitrail" class="zoomable thumbnail" src=""  />
-					</a>
+        <div id="description-page" class="content">
+            <div class="content-padded">
+                <a id="vitrail-thumbnail" href="#vitrailModal" data-ignore="push">
+                    <span class="fa fa-search fa-2x"></span>
+                    <img class="thumbnail" src="" alt="Vitrail Thumbnail"/>
+                </a>
+                <div class="social pull-right">
+                    <a href="#"><span class="fa fa-facebook-square fa-2x"></span></a>
+                    <a href="#"><span class="fa fa-google-plus-square fa-2x"></span></a>
+                    <a href="#"><span class="fa fa-twitter-square fa-2x"></span></a>
                 </div>
-                <div class="social">
-                    <i class="fa fa-facebook-square fa-2x"></i>
-                    <i class="fa fa-google-plus-square fa-2x"></i>
-                    <i class="fa fa-twitter-square fa-2x"></i>
+            </div>
+            <p class="content-padded description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim</p>
+            <div id="vitrailModal" class="modal">
+                <header class="bar bar-nav">
+                    <a class="icon icon-close pull-right" href="#vitrailModal"></a>
+                    <h1 class="title"></h1>
+                </header>
+                <div class="content">
+                    <img id="vitrail-resource" src="" alt="" />
+                    <a href="#" class="btn btn-block btn-outlined" target="_blank"><span class="fa fa-external-link"></span> Ouvrir dans un nouvel onglet</a>
                 </div>
-            </section>
-            <section class="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            </section>
+            </div>
         </div>
 
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/ratchet/dist/js/ratchet.min.js"></script>
+        <script src="assets/js/vitraux-visiteurs.min.js"></script>
     </body>
-    <script src="assets/js/explore.js"></script>
-    <script src="assets/js/description.js"></script>
 </html>
