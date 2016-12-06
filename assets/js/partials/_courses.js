@@ -62,6 +62,7 @@ function getCoursesList() {
 
 
     function displayViewPoint(dataViewPoint){
+        //Pas besoin de retrouver ces valeurs à chaque fois
         var viewpoint_id = dataViewPoint.rows[0].key[0],
             viewpoint_name = dataViewPoint.rows[0].value.name;
         $.each(dataViewPoint.rows, function(indexRow,row){
