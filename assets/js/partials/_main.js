@@ -63,5 +63,19 @@ var checkPage = function () {
     }
 };
 
+
+function requestFactory(url,display){
+          var request =  $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'json',
+                    success: function(data){
+                        display(data);
+                    }
+                })
+
+         return request;
+}
+
 window.addEventListener('push', checkPage);
 $(document).ready(checkPage);
