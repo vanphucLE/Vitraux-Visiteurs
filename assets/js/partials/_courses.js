@@ -94,27 +94,26 @@ function getCoursesList() {
                 var currentItem = courseList.get('id',row.value.topic.id)[0];
                 //Important, car il est possible que une item ne soit pas dans la liste
                 if(typeof currentItem != 'undefined'){
-                    var itemNumber = currentItem.values()['items-nb'] + 1;
                     currentItem.values({
-                        'items-nb' : itemNumber,
+                        'items-nb' : currentItem.values()['items-nb'] + 1,
                     });
                 }
            }
        });
 
       //Cette partie de la fonction permet d'afficher le nombre de lieux pour chaque parcours
-      $.each(dataCorpus.rows,function(index,row){
-         if(row.value.spatial){
-            var id_row = row.id;
-            $.each(dataCorpus.rows,function(indexVP,rowVP){
-                if(rowVP.value.topic && rowVP.id == id_row){
-                   var currentItem = courseList.get('id',rowVP.value.topic.id)[0];
+      $.each(dataCorpus.rows,function(indexSpatial,rowSpatial){
+         if(rowSpatial.value.spatial){
+            var id_row = rowSpatial.id,
+                lieu = rowSpatial.value.spatial;
+            $.each(dataCorpus.rows,function(indexTopic,rowTopic){
+                if(rowTopic.value.topic && rowTopic.id == id_row){
+                   var currentItem = courseList.get('id',rowTopic.value.topic.id)[0];
                    //Il est important de vérifier que la location n'est pas déjà présente(éviter les doublons)
-                   if(typeof currentItem != 'undefined' && currentItem.values()['locations_name'].indexOf(row.value.spatial) == -1){
-                         var locationNumber = currentItem.values()['locations'] + 1,
-                             locationNames = currentItem.values()['locations_name'].push(row.value.spatial);
+                   if(typeof currentItem != 'undefined' && currentItem.values()['locations_name'].indexOf(lieu) == -1){
+                         var locationNames = currentItem.values()['locations_name'].push(lieu);
                          currentItem.values({
-                             'locations' : locationNumber
+                             'locations' : currentItem.values()['locations'] + 1
                          })
                    }
 
