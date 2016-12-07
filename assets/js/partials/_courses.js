@@ -123,6 +123,11 @@ function getCoursesList() {
       })
     }  
 
+      /*
+      * Dans cette partie de la function nous parallelisons les requêtes et les affichages en même temps
+      * , la fonction Promise.all n'accepte que un Array, il est donc important de concaténer le tableau
+      *  contenant les requêtes permettant l'affichage des viewpoints et celui des corpus.
+      */
       Promise.all(viewpoints.map(function(viewPointObject){
             return requestFactory('http://argos2.hypertopic.org/viewpoint/'+viewPointObject['id'],displayViewPoint);
         }).concat(corpus.map(function(corpusObject){
