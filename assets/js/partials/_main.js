@@ -48,7 +48,7 @@ var checkPage = function () {
             getCoursesList();
             break;
         case 'map-page':
-            initialize();
+            // initialize();
             getCourseMap();
             break;
         case 'explore-page':
