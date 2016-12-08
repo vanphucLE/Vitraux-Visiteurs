@@ -65,16 +65,18 @@ var checkPage = function () {
 
 
 function requestFactory(url,display){
-          var request =  $.ajax({
+    var p = new Promise(function(resolve,reject){
+        $.ajax({
                     type: 'GET',
                     url: url,
                     dataType: 'json',
                     success: function(data){
-                        display(data);
+                       resolve(display(data))
                     }
-                })
+        })
+    })
 
-         return request;
+         return p;
 }
 
 window.addEventListener('push', checkPage);

@@ -48,7 +48,7 @@ function initList() {
 
 
 function getCoursesList() {
-
+   requestFactory('http://argos2.hypertopic.org/viewpoint/a76306e4f17ed4f79e7e481eb9a1bd06',function(d){console.log(d)})
     var viewpoints = [
         {
             "id": "56e092d8a6179a788c74b618b29801c0",
@@ -134,5 +134,4 @@ function getCoursesList() {
                 return requestFactory(corpusObject,displayCorpus);
         }))
       );
-    
 }
