@@ -48,7 +48,6 @@ function initList() {
 
 
 function getCoursesList() {
-   requestFactory('http://argos2.hypertopic.org/viewpoint/a76306e4f17ed4f79e7e481eb9a1bd06',function(d){console.log(d)})
     var viewpoints = [
         {
             "id": "56e092d8a6179a788c74b618b29801c0",
@@ -123,15 +122,21 @@ function getCoursesList() {
       })
     }  
 
-      /*
-      * Dans cette partie de la function nous parallelisons les requêtes et les affichages en même temps
-      * , la fonction Promise.all n'accepte que un Array, il est donc important de concaténer le tableau
-      *  contenant les requêtes permettant l'affichage des viewpoints et celui des corpus.
-      */
+
       Promise.all(viewpoints.map(function(viewPointObject){
             return requestFactory('http://argos2.hypertopic.org/viewpoint/'+viewPointObject['id'],displayViewPoint);
         }).concat(corpus.map(function(corpusObject){
-                return requestFactory(corpusObject,displayCorpus);
+                return requestFactory(corpusObject);
         }))
-      );
+      ).then(function(results){
+        // Il y a un résultat pour chaque requête mais si l'affichage est parallélisé cela renvoie "undefined",
+        // Cela signifie que les données présentent sont des données que l'on souhaite traiter par la suite.
+
+            results.map(function(result){
+                if(typeof result !== "undefined"){
+                    displayCorpus(result);
+                }
+            });
+
+      });
 }

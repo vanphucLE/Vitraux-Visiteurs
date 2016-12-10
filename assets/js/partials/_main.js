@@ -64,6 +64,7 @@ var checkPage = function () {
 };
 
 
+
 function requestFactory(url,display){
     var p = new Promise(function(resolve,reject){
         $.ajax({
@@ -71,7 +72,10 @@ function requestFactory(url,display){
                     url: url,
                     dataType: 'json',
                     success: function(data){
-                       resolve(display(data))
+                       (typeof display === "function")? resolve(display(data)) : resolve(data);
+                    },
+                    erreur: function(){
+                        reject('La requête a échoué');
                     }
         })
     })
