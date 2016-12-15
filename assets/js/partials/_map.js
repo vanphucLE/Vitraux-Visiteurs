@@ -9,9 +9,7 @@ function getCourseMap() {
         topicids = [],
         spatials = [],
         troyes =  new google.maps.LatLng(48.2973725, 4.0721523),
-        map,
-        direction;
-
+        map;
     function affichageParcours(dataTopic){
         dataTopic.rows.forEach(function(row){
           if(row.value.name){
@@ -46,7 +44,7 @@ function getCourseMap() {
                 maxZoom: 20
             };
             map = new google.maps.Map(document.getElementById('map'), options);
-            direction = new google.maps.DirectionsRenderer({map:map});     
+               
     }
 
     function drawDirections(center,endroits){
@@ -84,11 +82,14 @@ function getCourseMap() {
             destination: destination,
             waypoints: waypoints,
             travelMode: google.maps.DirectionsTravelMode.WALKING // A pied
-        };
-        var directionsService = new google.maps.DirectionsService();
-        directionsService.route(request, function (response, status) { // Envoie de la requête pour calculer le parcours
+        },
+        directionsService = new google.maps.DirectionsService(),
+        direction = new google.maps.DirectionsRenderer({map:map,suppressMarkers:true}); //SupressMarkers afin de cacher les markers automatique
+
+
+        directionsService.route(request, function (response, status) { 
             if (status === google.maps.DirectionsStatus.OK) {
-                direction.setDirections(response); // Trace l'itinéraire sur la carte
+                direction.setDirections(response);
             }
         });
 }
