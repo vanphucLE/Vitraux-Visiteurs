@@ -5,7 +5,7 @@ function getCourseMap() {
         troyes =  new google.maps.LatLng(48.2973725, 4.0721523),
         topicids = [],
         spatials = [],
-
+        spatialsAdress = [],
         map;
     function affichageParcours(dataTopic){
         dataTopic.rows.forEach(function(row){
@@ -58,6 +58,7 @@ function getCourseMap() {
             servicePlaces.textSearch(requestPlaces, function(resultats,statusRq){
                 if(statusRq === google.maps.places.PlacesServiceStatus.OK){
                     waypoints.push({location:resultats[0].formatted_address,stopover:true});
+                    spatialsAdress.push({location:resultats[0].formatted_address,url:'<a  href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + endroit + '">' + endroit + '</a>'})
                     if(waypoints.length == endroits.length){
                         resolve(waypoints);
                     }
@@ -93,14 +94,27 @@ function getCourseMap() {
 
     function addInformation(infoMarkers){
         var duration = 0;
+        infoMarkers.map(function(d){
 
-        infoMarkers.map(function(marker){
-            duration += marker.duration.value;
+            var content = spatialsAdress.filter(function(o){
+                return o.location == d.end_address;
+            })
+
+            var info = new google.maps.InfoWindow({
+                content: content[0].url
+            })
+
+            duration += d.duration.value;
+            
             var marker = new google.maps.Marker({
-                position: marker.end_location,
+                position: d.end_location,
                 map: map,
                 title: ""
             });
+            marker.addListener('click',function(){
+                info.open(map,marker);
+            })
+
         })
 
     }
