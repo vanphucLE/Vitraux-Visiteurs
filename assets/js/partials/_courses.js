@@ -58,7 +58,9 @@ function getCoursesList() {
             "name": "Histoire de l'art"
         }
     ],
-        corpus = ['http://argos2.hypertopic.org/corpus/Vitraux - Bénel'];
+        corpus = ['http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
+                  'http://argos2.hypertopic.org/corpus/Vitraux%20-%20Dr.%20Krieger',
+                  'http://argos2.hypertopic.org/corpus/Vitraux%20-%20Recensement'];
 
 
     function displayViewPoint(dataViewpoint){

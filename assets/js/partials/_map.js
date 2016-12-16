@@ -28,7 +28,6 @@ function getCourseMap() {
         dataCorpus.rows.forEach(function(row){
             if(row.value.spatial && topicids.indexOf(row.id) != -1 && spatials.indexOf(row.value.spatial) == -1){
                 spatials.push(row.value.spatial);
-                 $('.table-view').append('<li class="table-view-cell"><a class="navigate-right" href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + row.value.spatial + '" data-transition="slide-in">' + row.value.spatial + '</a></li>');
             }
         })
     } 
@@ -58,7 +57,7 @@ function getCourseMap() {
             servicePlaces.textSearch(requestPlaces, function(resultats,statusRq){
                 if(statusRq === google.maps.places.PlacesServiceStatus.OK){
                     waypoints.push({location:resultats[0].formatted_address,stopover:true});
-                    spatialsAdress.push({location:resultats[0].formatted_address,url:'<a href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + endroit + '">' + endroit + '</a>'})
+                    spatialsAdress.push({location:resultats[0].formatted_address,url:'<div><a href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + endroit + '">' + endroit + '</a></div>'})
                     if(waypoints.length == endroits.length){
                         resolve(waypoints);
                     }
@@ -81,7 +80,8 @@ function getCourseMap() {
                         origin: origin,
                         destination: destination,
                         waypoints: waypoints,
-                        travelMode: google.maps.DirectionsTravelMode.WALKING 
+                        travelMode: google.maps.DirectionsTravelMode.WALKING,
+                        optimizeWaypoints: true
         };
       
         directionsService.route(request, function (dataDirection, status) { 
@@ -93,9 +93,9 @@ function getCourseMap() {
     }
 
     function addInformation(infoMarkers){
-        var duration = 0;
-        infoMarkers.map(function(d){
-
+        var duration = 0
+            increment = ['A','B','C','D','E','F','G','H'];
+        infoMarkers.map(function(d,i){
             var content = spatialsAdress.filter(function(o){
                 return o.location == d.end_address;
             })
@@ -109,13 +109,18 @@ function getCourseMap() {
             var marker = new google.maps.Marker({
                 position: d.end_location,
                 map: map,
+                label: increment[i],
+                animation: google.maps.Animation.DROP,
                 title: ""
             });
             marker.addListener('click',function(){
                 info.open(map,marker);
             })
-
+            
         })
+
+        duration = getCourseDuration(duration/60);
+        $('#duration').text(duration);
 
     }
 

@@ -29,14 +29,14 @@ var getCourseDuration = function (total_min) {
     var minutes = total_min % 60;
     if (hours === 0) {
         if (minutes === 0) {
-            return '0';
+            return '0 min';
         }
-        return minutes + ' min';
+        return Math.floor(minutes) + ' min';
     } else {
         if (minutes === 0) {
             return hours + ' h';
         }
-        return hours + 'h' + minutes;
+        return hours + 'h' + Math.floor(minutes);
     }
 };
 
