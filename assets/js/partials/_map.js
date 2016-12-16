@@ -1,14 +1,11 @@
 var google;
-var calculate;
-var direction;
-var waypoints = [];
-
 function getCourseMap() {
     var viewpoint = getUrlParameter('viewpoint'),
         topic = getUrlParameter('topic'),
+        troyes =  new google.maps.LatLng(48.2973725, 4.0721523),
         topicids = [],
         spatials = [],
-        troyes =  new google.maps.LatLng(48.2973725, 4.0721523),
+
         map;
     function affichageParcours(dataTopic){
         dataTopic.rows.forEach(function(row){
@@ -77,22 +74,39 @@ function getCourseMap() {
     }
 
     function calculate(origin, destination, waypoints) {
-        var request = {
-            origin: origin,
-            destination: destination,
-            waypoints: waypoints,
-            travelMode: google.maps.DirectionsTravelMode.WALKING // A pied
-        },
-        directionsService = new google.maps.DirectionsService(),
-        direction = new google.maps.DirectionsRenderer({map:map,suppressMarkers:true}); //SupressMarkers afin de cacher les markers automatique
-
-
-        directionsService.route(request, function (response, status) { 
+        var directionsService = new google.maps.DirectionsService(),
+            direction = new google.maps.DirectionsRenderer({map:map,suppressMarkers:true}), //SupressMarkers afin de cacher les markers automatique
+            request = {
+                        origin: origin,
+                        destination: destination,
+                        waypoints: waypoints,
+                        travelMode: google.maps.DirectionsTravelMode.WALKING 
+        };
+      
+        directionsService.route(request, function (dataDirection, status) { 
             if (status === google.maps.DirectionsStatus.OK) {
-                direction.setDirections(response);
+                direction.setDirections(dataDirection);
+                addInformation(dataDirection.routes[0].legs);
             }
         });
-}
+    }
+
+    function addInformation(infoMarkers){
+        var duration = 0;
+
+        infoMarkers.map(function(marker){
+            duration += marker.duration.value;
+            var marker = new google.maps.Marker({
+                position: marker.end_location,
+                map: map,
+                title: ""
+            });
+        })
+
+    }
+
+
+
 
 
     Promise.all([
