@@ -133,7 +133,6 @@ function getCoursesList() {
       ).then(function(results){
         // Il y a un résultat pour chaque requête mais si l'affichage est parallélisé cela renvoie "undefined",
         // Cela signifie que les données présentent sont des données que l'on souhaite traiter par la suite.
-
             results.map(function(result){
                 if(typeof result !== "undefined"){
                     displayCorpus(result);
