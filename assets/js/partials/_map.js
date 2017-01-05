@@ -6,7 +6,20 @@ function getCourseMap() {
         topicids = [],
         spatials = [],
         spatialsAdress = [],
-        map;
+        map,
+        geoApi = navigator.geolocation,
+        currentPosition = {};
+
+
+
+        geoApi.getCurrentPosition(function(position){
+            currentPosition.lat = position.coords.latitude;
+            currentPosition.lng = position.coords.longitude;
+
+        });
+
+
+
     function affichageParcours(dataTopic){
         dataTopic.rows.forEach(function(row){
           if(row.value.name){
@@ -56,8 +69,9 @@ function getCourseMap() {
             //Text search utilisant l'API Place de Google afin de trouver un endroit par rapport au nom de l'endroit
             servicePlaces.textSearch(requestPlaces, function(resultats,statusRq){
                 if(statusRq === google.maps.places.PlacesServiceStatus.OK){
+                    console.log(resultats);
                     waypoints.push({location:resultats[0].formatted_address,stopover:true});
-                    spatialsAdress.push({location:resultats[0].formatted_address,url:'<div><a href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + endroit + '">' + endroit + '</a></div>'})
+                    spatialsAdress.push({lat: resultats[0].geometry.location.lat(),lng:resultats[0].geometry.location.lng(),location:resultats[0].formatted_address,url:'<div><a href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + endroit + '">' + endroit + '</a></div>'})
                     if(waypoints.length == endroits.length){
                         resolve(waypoints);
                     }
@@ -68,6 +82,7 @@ function getCourseMap() {
             })
 
         p.then(function(wp){
+            console.log(wp);
             calculate(wp[0].location,wp[wp.length-1].location,wp);
         })    
      
@@ -125,6 +140,22 @@ function getCourseMap() {
     }
 
 
+
+    function closestDistance(here,there){
+        var lat,
+            lon,
+            a,
+            c,
+            d,
+            closest;
+
+        there.forEach(function(t){
+            lat = t.lat - here.lat;
+            lng = t.lng - here.lat;
+            a = Math.pow((Math.sin(lat/2)),2) + Math.cos(t.lat) * Math.cos(here.lat) * Math.pow((Math.sin(lng/2)),2);
+            c = 2 * Math.atan()
+        })
+    }
 
 
 
