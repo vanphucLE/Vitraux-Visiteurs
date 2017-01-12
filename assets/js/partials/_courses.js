@@ -109,6 +109,10 @@ function getCoursesList() {
                 lieu = rowSpatial.value.spatial;
             $.each(dataCorpus.rows,function(indexTopic,rowTopic){
                 if(rowTopic.value.topic && rowTopic.id == id_row){
+                    console.log(rowTopic);
+                    if(rowTopic.value.topic == "c0eb2f317cb1354cbb188e474e5b5a3a" ){
+                        console.log(lieu);
+                    }
                    var currentItem = courseList.get('id',rowTopic.value.topic.id)[0];
                    //Il est important de vérifier que la location n'est pas déjà présente(éviter les doublons)
                    if(typeof currentItem != 'undefined' && currentItem.values()['locations_name'].indexOf(lieu) == -1){

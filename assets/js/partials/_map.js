@@ -39,10 +39,14 @@ function getCourseMap() {
         
         //Trouver les endroits, afficher le menu
         dataCorpus.rows.forEach(function(row){
+            if(row.value.spatial && topicids.indexOf(row.id) != -1){
+                console.log(row.value.spatial);
+            }
             if(row.value.spatial && topicids.indexOf(row.id) != -1 && spatials.indexOf(row.value.spatial) == -1){
                 spatials.push(row.value.spatial);
             }
         })
+        console.log(spatials);
     } 
 
     function createMap(center){
@@ -69,8 +73,8 @@ function getCourseMap() {
             //Text search utilisant l'API Place de Google afin de trouver un endroit par rapport au nom de l'endroit
             servicePlaces.textSearch(requestPlaces, function(resultats,statusRq){
                 if(statusRq === google.maps.places.PlacesServiceStatus.OK){
-                    console.log(resultats);
                     waypoints.push({location:resultats[0].formatted_address,stopover:true});
+                    console.log(resultats[0]);
                     spatialsAdress.push({lat: resultats[0].geometry.location.lat(),lng:resultats[0].geometry.location.lng(),location:resultats[0].formatted_address,url:'<div><a href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + endroit + '">' + endroit + '</a></div>'})
                     if(waypoints.length == endroits.length){
                         resolve(waypoints);
@@ -97,7 +101,6 @@ function getCourseMap() {
                         travelMode: google.maps.DirectionsTravelMode.WALKING,
                         optimizeWaypoints: true
         };
-      
         directionsService.route(request, function (dataDirection, status) { 
             if (status === google.maps.DirectionsStatus.OK) {
                 addInformation(dataDirection.routes[0].legs);
@@ -109,6 +112,7 @@ function getCourseMap() {
     function addInformation(infoMarkers){
         var duration = 0
             increment = ['A','B','C','D','E','F','G','H'];
+            console.log(infoMarkers)
         infoMarkers.map(function(d,i){
             var content = spatialsAdress.filter(function(o){
                 return o.location == d.end_address;
