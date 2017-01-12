@@ -82,7 +82,6 @@ function getCourseMap() {
             })
 
         p.then(function(wp){
-            console.log(wp);
             calculate(wp[0].location,wp[wp.length-1].location,wp);
         })    
      
@@ -115,9 +114,9 @@ function getCourseMap() {
                 return o.location == d.end_address;
             })
 
-            var info = new google.maps.InfoWindow({
-                content: content[0].url
-            })
+            // var info = new google.maps.InfoWindow({
+            //     content: content[0].url
+            // })
 
             duration += d.duration.value;
             
