@@ -74,7 +74,7 @@ function getCourseMap() {
             servicePlaces.textSearch(requestPlaces, function(resultats,statusRq){
                 if(statusRq === google.maps.places.PlacesServiceStatus.OK){
                     waypoints.push({location:resultats[0].formatted_address,stopover:true});
-                    console.log(resultats[0]);
+                    console.log(endroit+"=>"+resultats[0].formatted_address);
                     spatialsAdress.push({lat: resultats[0].geometry.location.lat(),lng:resultats[0].geometry.location.lng(),location:resultats[0].formatted_address,url:'<div><a href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + endroit + '">' + endroit + '</a></div>'})
                     if(waypoints.length == endroits.length){
                         resolve(waypoints);
@@ -112,7 +112,7 @@ function getCourseMap() {
     function addInformation(infoMarkers){
         var duration = 0
             increment = ['A','B','C','D','E','F','G','H'];
-            console.log(infoMarkers)
+
         infoMarkers.map(function(d,i){
             var content = spatialsAdress.filter(function(o){
                 return o.location == d.end_address;

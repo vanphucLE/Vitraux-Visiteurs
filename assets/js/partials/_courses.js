@@ -68,22 +68,25 @@ function getCoursesList() {
         var viewpoint_id = dataViewpoint.rows[0].key[0],
             viewpoint_name = dataViewpoint.rows[0].value.name;
         $.each(dataViewpoint.rows, function(indexRow,row){
-            // Si le topic existe
-            if(row.value.narrower){
-                 //Ajoute +1 au compteur du nombre de parcours
-                 $('#courses-num').text(parseInt($('#courses-num').text()) + 1);
-                 courseList.add({
-                        'id': row.value.narrower.id,
-                        'course-title': 'Parcours "' + row.value.narrower.name + '"',
-                        'course-vp': "— " + viewpoint_name,
-                        'distance': 0,
-                        'locations': 0,
-                        'locations_name' : [],
-                        'duration': 0,
-                        'items-nb': 0,
-                        'topic-link' : 'map.html?viewpoint=' + viewpoint_id + '&topic=' + row.value.narrower.id
-                 });
+            if(row.value){
+                console.log(row.value);
             }
+            // Si le topic existe
+            // if(row.value.narrower){
+            //      //Ajoute +1 au compteur du nombre de parcours
+            //      $('#courses-num').text(parseInt($('#courses-num').text()) + 1);
+            //      courseList.add({
+            //             'id': row.value.narrower.id,
+            //             'course-title': 'Parcours "' + row.value.narrower.name + '"',
+            //             'course-vp': "— " + viewpoint_name,
+            //             'distance': 0,
+            //             'locations': 0,
+            //             'locations_name' : [],
+            //             'duration': 0,
+            //             'items-nb': 0,
+            //             'topic-link' : 'map.html?viewpoint=' + viewpoint_id + '&topic=' + row.value.narrower.id
+            //      });
+            // }
         })
     }
 
@@ -109,10 +112,6 @@ function getCoursesList() {
                 lieu = rowSpatial.value.spatial;
             $.each(dataCorpus.rows,function(indexTopic,rowTopic){
                 if(rowTopic.value.topic && rowTopic.id == id_row){
-                    console.log(rowTopic);
-                    if(rowTopic.value.topic == "c0eb2f317cb1354cbb188e474e5b5a3a" ){
-                        console.log(lieu);
-                    }
                    var currentItem = courseList.get('id',rowTopic.value.topic.id)[0];
                    //Il est important de vérifier que la location n'est pas déjà présente(éviter les doublons)
                    if(typeof currentItem != 'undefined' && currentItem.values()['locations_name'].indexOf(lieu) == -1){
