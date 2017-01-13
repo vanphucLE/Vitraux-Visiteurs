@@ -66,28 +66,44 @@ function getCoursesList() {
     function displayViewPoint(dataViewpoint){
         //Nous enregistrons directement l'id et le nom du viewpoint car il s'agit à chaque fois du premier objet
         var viewpoint_id = dataViewpoint.rows[0].key[0],
-            viewpoint_name = dataViewpoint.rows[0].value.name;
-        $.each(dataViewpoint.rows, function(indexRow,row){
-            if(row.value){
-                console.log(row.value);
+            viewpoint_name = dataViewpoint.rows[0].value.name,
+            topics = [];
+
+        dataViewpoint.rows.forEach(function(row){
+            var idTopic = row.key[1],
+                name = "",
+                broader = "";
+
+            //Si le topic n'est pas undefined et si le topic est déjà présent afin d'éviter tout calcul non nécessaire
+            if(idTopic && topics.indexOf(row.key[1]) == -1){
+                 topics.push(row.key[1]);
+                 dataViewpoint.rows.forEach(function(row2){
+                    if(row2.key[1] == idTopic && row2.value.broader){
+                            broader = row2.value.broader.id;
+                    }
+                })
+
+                dataViewpoint.rows.forEach(function(row2){
+                    if(row2.key[1] == idTopic && row2.value.name){
+                            name = row2.value.name;
+                    }
+                })
+
+                $('#courses-num').text(parseInt($('#courses-num').text()) + 1);
+                courseList.add({
+                        'id': idTopic,
+                        'course-title': 'Parcours "' + name + '"',
+                        'course-vp': "— " + viewpoint_name,
+                        'broader_id': broader,
+                        'distance': 0,
+                        'locations': 0,
+                        'locations_name' : [],
+                        'duration': 0,
+                        'items-nb': 0,
+                        'topic-link' : 'map.html?viewpoint=' + viewpoint_id + '&topic=' +idTopic
+                 });
             }
-            // Si le topic existe
-            // if(row.value.narrower){
-            //      //Ajoute +1 au compteur du nombre de parcours
-            //      $('#courses-num').text(parseInt($('#courses-num').text()) + 1);
-            //      courseList.add({
-            //             'id': row.value.narrower.id,
-            //             'course-title': 'Parcours "' + row.value.narrower.name + '"',
-            //             'course-vp': "— " + viewpoint_name,
-            //             'distance': 0,
-            //             'locations': 0,
-            //             'locations_name' : [],
-            //             'duration': 0,
-            //             'items-nb': 0,
-            //             'topic-link' : 'map.html?viewpoint=' + viewpoint_id + '&topic=' + row.value.narrower.id
-            //      });
-            // }
-        })
+        })    
     }
 
     function displayCorpus(dataCorpus){
