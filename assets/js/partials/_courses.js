@@ -64,28 +64,29 @@ function getCoursesList() {
 
 
     function displayViewPoint(dataViewpoint){
-        //Nous enregistrons directement l'id et le nom du viewpoint car il s'agit à chaque fois du premier objet
+        //VP's id and VP's name are always the first item from the list in the hierachy
         var viewpoint_id = dataViewpoint.rows[0].key[0],
             viewpoint_name = dataViewpoint.rows[0].value.name,
             topics = [];
 
-        dataViewpoint.rows.forEach(function(row){
-            var idTopic = row.key[1],
+        dataViewpoint.rows.forEach(function(rowX){
+            var idTopic = rowX.key[1],
                 name = "",
                 broader = "";
 
-            //Si le topic n'est pas undefined et si le topic est déjà présent afin d'éviter tout calcul non nécessaire
-            if(idTopic && topics.indexOf(row.key[1]) == -1){
-                 topics.push(row.key[1]);
-                 dataViewpoint.rows.forEach(function(row2){
-                    if(row2.key[1] == idTopic && row2.value.broader){
-                            broader = row2.value.broader.id;
+            //if topic id is undefined and if the topic has already been processed in order to avoid any useless computation
+            if(idTopic && topics.indexOf(rowX.key[1]) == -1){
+                 topics.push(rowX.key[1]);
+                 //Recherche de l'id du sujet broader
+                 dataViewpoint.rows.forEach(function(rowY){
+                    if(rowY.key[1] == idTopic && rowY.value.broader){
+                            broader = rowY.value.broader.id;
                     }
                 })
-
-                dataViewpoint.rows.forEach(function(row2){
-                    if(row2.key[1] == idTopic && row2.value.name){
-                            name = row2.value.name;
+                //Find topic's name
+                dataViewpoint.rows.forEach(function(rowY){
+                    if(rowY.key[1] == idTopic && rowY.value.name){
+                            name = rowY.value.name;
                     }
                 })
 
@@ -98,7 +99,7 @@ function getCoursesList() {
                         'distance': 0,
                         'locations': 0,
                         'locations_name' : [],
-                        'duration': 0,
+                        'duration': "NC",
                         'items-nb': 0,
                         'topic-link' : 'map.html?viewpoint=' + viewpoint_id + '&topic=' +idTopic
                  });
@@ -106,41 +107,44 @@ function getCoursesList() {
         })    
     }
 
+
+
+
     function displayCorpus(dataCorpus){
-    
-      //Cette partie de la fonction permet d'afficher le nombre de vitraux pour chaque parcours
-       $.each(dataCorpus.rows,function(index,row){
-           if(row.value.topic){
-                var currentItem = courseList.get('id',row.value.topic.id)[0];
-                //Important, car il est possible que une item ne soit pas dans la liste
-                if(typeof currentItem != 'undefined'){
-                    currentItem.values({
-                        'items-nb' : currentItem.values()['items-nb'] + 1,
-                    });
+        //Get number of stained glass
+       dataCorpus.rows.forEach(function(row){
+            if(row.value.topic){
+                var itemTemp = courseList.get('id',row.value.topic.id)[0];
+                //Add +1 for the current subject and his broader subject
+                while(itemTemp){
+                    itemTemp.values({'items-nb' : itemTemp.values()['items-nb'] + 1 })
+                    itemTemp = courseList.get('id',itemTemp.values()['broader_id'])[0];
                 }
-           }
+            }
        });
 
-      //Cette partie de la fonction permet d'afficher le nombre de lieux pour chaque parcours
-      $.each(dataCorpus.rows,function(indexSpatial,rowSpatial){
-         if(rowSpatial.value.spatial){
-            var id_row = rowSpatial.id,
-                lieu = rowSpatial.value.spatial;
-            $.each(dataCorpus.rows,function(indexTopic,rowTopic){
-                if(rowTopic.value.topic && rowTopic.id == id_row){
-                   var currentItem = courseList.get('id',rowTopic.value.topic.id)[0];
-                   //Il est important de vérifier que la location n'est pas déjà présente(éviter les doublons)
-                   if(typeof currentItem != 'undefined' && currentItem.values()['locations_name'].indexOf(lieu) == -1){
-                         var locationNames = currentItem.values()['locations_name'].push(lieu);
-                         currentItem.values({
-                             'locations' : currentItem.values()['locations'] + 1
-                         })
-                   }
+       //Get number of places for this particular tour
+       dataCorpus.rows.forEach(function(rowX){
+            if(rowX.value.spatial){
+                var id = rowX.id,
+                    place = rowX.value.spatial;
+                //Time to look for the topic concerned by the spatial variable
+                dataCorpus.rows.forEach(function(rowY){
+                    if(rowY.value.topic && rowY.id == id){
+                        var itemTemp = courseList.get('id',rowY.value.topic.id)[0];
+                        while(itemTemp){
+                            if(itemTemp.values()['locations_name'].indexOf(place) == -1){
+                                itemTemp.values()['locations_name'].push(place);
+                                itemTemp.values({'locations' : itemTemp.values()['locations'] + 1 })
+                            }
+                            itemTemp = courseList.get('id',itemTemp.values()['broader_id'])[0];
+                        }
+                    }
+                }); //Second loop
+            }
+       }); // First loop
 
-                }
-            })
-         }
-      })
+       courseList.sort('locations',{order:"desc"});
     }  
 
 
