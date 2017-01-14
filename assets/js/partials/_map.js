@@ -3,7 +3,7 @@ function getCourseMap(corpus) {
     var viewpoint = getUrlParameter('viewpoint'),
         troyes =  new google.maps.LatLng(48.2973725, 4.0721523),
         topicids = [ getUrlParameter('topic')],
-        spatials = [],
+        places_name = [],
         spatialsAdress = [],
         map,
         geoApi = navigator.geolocation,
@@ -25,25 +25,22 @@ function getCourseMap(corpus) {
        getNarrower(dataViewpoint.rows,topicids[0]);
     }
 
-    function affichageMenu(dataCorpus){
+    function findLocation(dataCorpus){
+        var rowids = [];
+
+        //Allow us to find every rowId for every topic we are looking for 
+        dataCorpus.forEach(function(row){
+            if(row.value.topic && topicids.indexOf(row.value.topic.id) != -1 ){
+                rowids.push(row.id);
+            }
+        });
         
-        // //Trouver l'id des row permettant de retrouver les endroits
-        // dataCorpus.rows.forEach(function(row){
-        //     if(row.value.topic && row.value.topic.id == topic){
-        //         topicids.push(row.id);
-        //     }
-        // });
-        
-        // //Trouver les endroits, afficher le menu
-        // dataCorpus.rows.forEach(function(row){
-        //     if(row.value.spatial && topicids.indexOf(row.id) != -1){
-        //         console.log(row.value.spatial);
-        //     }
-        //     if(row.value.spatial && topicids.indexOf(row.id) != -1 && spatials.indexOf(row.value.spatial) == -1){
-        //         spatials.push(row.value.spatial);
-        //     }
-        // })
-        // console.log(spatials);
+        //Find every location related to the topics
+        dataCorpus.forEach(function(row){
+            if(row.value.spatial && rowids.indexOf(row.id) != -1 && places_name.indexOf(row.value.spatial) == -1){
+                places_name.push(row.value.spatial);
+            }
+        });
     } 
 
     // function createMap(center){
@@ -159,12 +156,21 @@ function getCourseMap(corpus) {
 
 
     Promise.all([requestFactory('http://argos2.hypertopic.org/viewpoint/' + viewpoint,getDataViewpoint)].concat(corpus.map(function(text){
-        return requestFactory(text,affichageMenu);
-    }))).then(function(){
-         console.log(topicids.length);
+        return requestFactory(text);
+    }))).then(function(corpusData){
+            //We had to process the corpus data after because we do need the viewpoint data to be process before going further
+            //We use the same kind of workaround as in the tour page because the data from viewpoint are processed before, hence undefined
+            corpusData.map(function(currentCorpus){
+                if(currentCorpus){
+                    findLocation(currentCorpus.rows);
+                }
+            });
             // createMap(troyes);
             // drawDirections(troyes,spatials);
         });
+
+
+
 }
 
 

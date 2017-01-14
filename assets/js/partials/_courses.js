@@ -150,7 +150,6 @@ function getTours(viewpoints,corpus) {
                         displayCorpus(result);
                     }
                 });
-
           });   
 }
 
