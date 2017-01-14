@@ -12,7 +12,7 @@ var loading = function(){
                 getTours(viewpoints,corpus);
                 break;
             case 'map-page':
-                getCourseMap();
+                getCourseMap(corpus);
                 break;
             case 'explore-page':
                 getLocationVitraux();
