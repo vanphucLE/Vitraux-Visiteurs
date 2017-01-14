@@ -1,69 +1,9 @@
-function initList() {
-    // List.js
-    var options = {
-        valueNames: [
-            'course-title',
-            'course-vp',
-            'distance',
-            'locations',
-            'duration',
-            'items-nb',
-            {data: ['id']},
-            {attr: 'href', name: 'topic-link'}
-        ],
-        item: '<li class="table-view-cell course" data-id="">' +
-                '<a class="navigate-right topic-link" href="#" data-transition="slide-in" data-ignore="push">' +
-                '<div class="media-body">' +
-                '<div class="course-header">' +
-                '<h2 class="course-title"></h2>' +
-                '<p class="course-vp"></p>' +
-                '</div>' +
-                '<div class="course-abstract clearfix">' +
-                '<div>' +
-                '<p>' +
-                '<span class="fa fa-flag-o"></span> ' +
-                '<span class="distance"></span> km' +
-                '</p>' +
-                '<p>' +
-                '<span class="fa fa-map-marker"></span> ' +
-                '<span class="locations"></span>' +
-                '</p>' +
-                '</div>' +
-                '<div>' +
-                '<p>' +
-                '<span class="fa fa-clock-o"></span> ' +
-                '<span class="duration"></span>' +
-                '</p>' +
-                '<p><span class="items-nb"></span>' +
-                '<span class="item-text"><span>' +
-                '</p>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '</a>' +
-                '</li>'
-    };
-    courseList = new List('courses', options);
-}
+function getTours(viewpoints,corpus) {
 
 
-function getCoursesList() {
-    var viewpoints = [
-        {
-            "id": "56e092d8a6179a788c74b618b29801c0",
-            "name": "Histoire des religions"
-        },
-        {
-            "id": "a76306e4f17ed4f79e7e481eb9a1bd06",
-            "name": "Histoire de l'art"
-        }
-    ],
-        corpus = ['http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
-                  'http://argos2.hypertopic.org/corpus/Vitraux%20-%20Dr.%20Krieger',
-                  'http://argos2.hypertopic.org/corpus/Vitraux%20-%20Recensement'];
 
 
-    function displayViewPoint(dataViewpoint){
+    var displayViewPoint = function(dataViewpoint){
         //VP's id and VP's name are always the first item from the list in the hierachy
         var viewpoint_id = dataViewpoint.rows[0].key[0],
             viewpoint_name = dataViewpoint.rows[0].value.name,
@@ -107,10 +47,7 @@ function getCoursesList() {
         })    
     }
 
-
-
-
-    function displayCorpus(dataCorpus){
+    var displayCorpus = function(dataCorpus){
         //Get number of stained glass
        dataCorpus.rows.forEach(function(row){
             if(row.value.topic){
@@ -145,22 +82,78 @@ function getCoursesList() {
        }); // First loop
 
        courseList.sort('locations',{order:"desc"});
-    }  
+    } 
 
 
-      Promise.all(viewpoints.map(function(viewPointObject){
-            return requestFactory('http://argos2.hypertopic.org/viewpoint/'+viewPointObject['id'],displayViewPoint);
-        }).concat(corpus.map(function(corpusObject){
-                return requestFactory(corpusObject);
-        }))
-      ).then(function(results){
-        // Il y a un résultat pour chaque requête mais si l'affichage est parallélisé cela renvoie "undefined",
-        // Cela signifie que les données présentent sont des données que l'on souhaite traiter par la suite.
-            results.map(function(result){
-                if(typeof result !== "undefined"){
-                    displayCorpus(result);
-                }
-            });
 
-      });
+    var initializeList = function() {
+            // List.js
+            var options = {
+                valueNames: [
+                    'course-title',
+                    'course-vp',
+                    'distance',
+                    'locations',
+                    'duration',
+                    'items-nb',
+                    {data: ['id']},
+                    {attr: 'href', name: 'topic-link'}
+                ],
+                item: '<li class="table-view-cell course" data-id="">' +
+                        '<a class="navigate-right topic-link" href="#" data-transition="slide-in" data-ignore="push">' +
+                        '<div class="media-body">' +
+                        '<div class="course-header">' +
+                        '<h2 class="course-title"></h2>' +
+                        '<p class="course-vp"></p>' +
+                        '</div>' +
+                        '<div class="course-abstract clearfix">' +
+                        '<div>' +
+                        '<p>' +
+                        '<span class="fa fa-flag-o"></span> ' +
+                        '<span class="distance"></span> km' +
+                        '</p>' +
+                        '<p>' +
+                        '<span class="fa fa-map-marker"></span> ' +
+                        '<span class="locations"></span>' +
+                        ' Lieu(x)</p>' +
+                        '</div>' +
+                        '<div>' +
+                        '<p>' +
+                        '<span class="fa fa-clock-o"></span> ' +
+                        '<span class="duration"></span>' +
+                        '</p>' +
+                        '<p><span class="items-nb"></span>' +
+                        '<span class="item-text"><span>' +
+                        ' Vitraux</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</a>' +
+                        '</li>'
+            };
+            courseList = new List('courses', options);
+    }
+ 
+
+    initializeList();
+
+    Promise.all(viewpoints.map(function(viewpoint){
+                return requestFactory('http://argos2.hypertopic.org/viewpoint/'+viewpoint,displayViewPoint);
+            }).concat(corpus.map(function(corpusObject){
+                    return requestFactory(corpusObject);
+            }))
+          ).then(function(results){
+            // Il y a un résultat pour chaque requête mais si l'affichage est parallélisé cela renvoie "undefined",
+            // Cela signifie que les données présentent sont des données que l'on souhaite traiter par la suite.
+                results.map(function(result){
+                    if(result){
+                        displayCorpus(result);
+                    }
+                });
+
+          });   
 }
+
+
+
+
