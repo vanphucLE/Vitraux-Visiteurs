@@ -4,7 +4,7 @@ function getCourseMap(corpus) {
         TROYES_CENTER =  new google.maps.LatLng(48.2973725, 4.0721523),
         topicids = [ getUrlParameter('topic')],
         places_name = [],
-        spatialsAdress = [],
+        urls = [],
         geoApi = navigator.geolocation,
         map;
 
@@ -62,6 +62,7 @@ function getCourseMap(corpus) {
         return new Promise(function(resolve,reject){
               googlePlacesService.textSearch(optionRequestPlace,function(textSearch,requestStatus){
                      if(requestStatus === google.maps.places.PlacesServiceStatus.OK){
+                            urls.push('<a href="explore.html?topic='+topicids[0]+'&viewpoint='+viewpoint+'&spatial='+place+'">'+place+'</a>' )
                             resolve({location: textSearch[0].formatted_address,stopover: true});
                      }else{
                             resolve(null);
@@ -71,95 +72,59 @@ function getCourseMap(corpus) {
     }
        
 
+    function setRoute(start,waypoints,map,infoWindowData){
+        var googleDirectionService = new google.maps.DirectionsService(),
+            googleDirectionRenderer = new google.maps.DirectionsRenderer({map:map,suppressMarkers:true}),
+            options = {origin: start, destination: start, waypoints: waypoints,travelMode: google.maps.DirectionsTravelMode.WALKING, optimizeWaypoints: true};
+            return new Promise(function(resolve,reject){
+                googleDirectionService.route(options,function(direction,requestStatus){
+                    if(requestStatus == google.maps.DirectionsStatus.OK){
+                        googleDirectionRenderer.setDirections(direction);
 
+                        /*
+                         * The waypoints order we get from google is different from
+                         * the waypoint order we had before, since the urls array
+                         * is based on the first order, we have to fix it
+                        */
+                        direction.request.waypoints.forEach(function(wpX,i){
+                            waypoints.forEach(function(wpY,j){
+                                if(wpX.location === wpY.location && i != j){
+                                    infoWindowData[j] = infoWindowData[i]
+                                }
+                            });
+                        });
+        
+
+                        customizeMarkers(direction.routes[0],map,infoWindowData);
+
+                    }
+                })
+            })
+
+        function customizeMarkers(directionData,map,infoWindowData){
+            var locationTracker = [],
+                duration = 0,
+                order = directionData.waypoint_order;
+
+           directionData.legs.map(function(thisMarker,index){
+                if(locationTracker.indexOf(thisMarker.end_location.toString()) == -1){
+                    var marker = new google.maps.Marker({position: thisMarker.end_location,map:map,label: (index+1).toString()}),
+                        info = new google.maps.InfoWindow({content: infoWindowData[order[index]]});
+
+                    duration += thisMarker.duration.value;
+                    locationTracker.push(thisMarker.end_location.toString()); //So we don't have to compare the whole object
+                    marker.addListener('click',function(){
+                        info.open(map,marker);
+                    });
+                }
+                
+            });   
+        }
+    }
 
 
     
 
-
-
-
-
-    // function drawDirections(center,endroits){
-    //     var waypoints = [],
-    //         p = new Promise(function(resolve,reject){
-    //                endroits.map(function(endroit){
-    //         var requestPlaces = {
-    //             location: center,
-    //             radius: 500,
-    //             query: endroit
-    //         },
-    //             servicePlaces = new google.maps.places.PlacesService(map);    
-    //         //Text search utilisant l'API Place de Google afin de trouver un endroit par rapport au nom de l'endroit
-    //         servicePlaces.textSearch(requestPlaces, function(resultats,statusRq){
-    //             if(statusRq === google.maps.places.PlacesServiceStatus.OK){
-    //                 waypoints.push({location:resultats[0].formatted_address,stopover:true});
-    //                 spatialsAdress.push({lat: resultats[0].geometry.location.lat(),lng:resultats[0].geometry.location.lng(),location:resultats[0].formatted_address,url:'<div><a href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + endroit + '">' + endroit + '</a></div>'})
-    //                 if(waypoints.length == endroits.length){
-    //                     resolve(waypoints);
-    //                 }
-    //             }
-    //         });
-
-    //     });
-    //         })
-
-    //     p.then(function(wp){
-    //         calculate(wp[0].location,wp[wp.length-1].location,wp);
-    //     })    
-     
-    // }
-
-    // function calculate(origin, destination, waypoints) {
-    //     var directionsService = new google.maps.DirectionsService(),
-    //         direction = new google.maps.DirectionsRenderer({map:map,suppressMarkers:true}), //SupressMarkers afin de cacher les markers automatique
-    //         request = {
-    //                     origin: origin,
-    //                     destination: destination,
-    //                     waypoints: waypoints,
-    //                     travelMode: google.maps.DirectionsTravelMode.WALKING,
-    //                     optimizeWaypoints: true
-    //     };
-    //     directionsService.route(request, function (dataDirection, status) { 
-    //         if (status === google.maps.DirectionsStatus.OK) {
-    //             addInformation(dataDirection.routes[0].legs);
-    //             direction.setDirections(dataDirection);
-    //         }
-    //     });
-    // }
-
-    // function addInformation(infoMarkers){
-    //     var duration = 0
-    //         increment = ['A','B','C','D','E','F','G','H'];
-
-    //     infoMarkers.map(function(d,i){
-    //         var content = spatialsAdress.filter(function(o){
-    //             return o.location == d.end_address;
-    //         })
-
-    //         // var info = new google.maps.InfoWindow({
-    //         //     content: content[0].url
-    //         // })
-
-    //         duration += d.duration.value;
-            
-    //         var marker = new google.maps.Marker({
-    //             position: d.end_location,
-    //             map: map,
-    //             label: increment[i],
-    //             animation: google.maps.Animation.DROP,
-    //             title: ""
-    //         });
-    //         marker.addListener('click',function(){
-    //             info.open(map,marker);
-    //         })
-            
-    //     })
-
-    //     duration = getCourseDuration(duration/60);
-    //     $('#duration').text(duration);
-
-    // }
 
 
 
@@ -190,7 +155,7 @@ function getCourseMap(corpus) {
             return Promise.all(places_name.map(function(place){return getWaypoints(TROYES_CENTER,place,map);}));
         }).then(function(waypoints){
             waypoints = cleanData(waypoints);
-            
+            return setRoute(waypoints[0].location,waypoints,map,urls)
         })
 }
 
