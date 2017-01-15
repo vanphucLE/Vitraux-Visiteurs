@@ -1,13 +1,12 @@
 var google;
 function getCourseMap(corpus) {
     var viewpoint = getUrlParameter('viewpoint'),
-        troyes =  new google.maps.LatLng(48.2973725, 4.0721523),
+        TROYES_CENTER =  new google.maps.LatLng(48.2973725, 4.0721523),
         topicids = [ getUrlParameter('topic')],
         places_name = [],
         spatialsAdress = [],
-        map,
         geoApi = navigator.geolocation,
-        currentPosition = {};
+        map;
 
     function getDataViewpoint(dataViewpoint){
             //Allow us to explore the whole tree from viewpoint in order to get every narrower subject
@@ -26,33 +25,63 @@ function getCourseMap(corpus) {
     }
 
     function findLocation(dataCorpus){
-        var rowids = [];
+        //We had to process the corpus data after because we do need the viewpoint data to be process before going further
+        //We use the same kind of workaround as in the tour page because the data from viewpoint are processed before, hence undefined
+        dataCorpus.map(function(thisCorpus){
+            if(thisCorpus){
+                var rowids = [];
+                //Allow us to find every rowId for every topic we are looking for 
+                thisCorpus.rows.forEach(function(row){
+                    if(row.value.topic && topicids.indexOf(row.value.topic.id) != -1 ){
+                            rowids.push(row.id);
+                    }
+                });
 
-        //Allow us to find every rowId for every topic we are looking for 
-        dataCorpus.forEach(function(row){
-            if(row.value.topic && topicids.indexOf(row.value.topic.id) != -1 ){
-                rowids.push(row.id);
+                //Find every location related to the topics
+                thisCorpus.rows.forEach(function(row){
+                    if(row.value.spatial && rowids.indexOf(row.id) != -1 && places_name.indexOf(row.value.spatial) == -1){
+                        places_name.push(row.value.spatial);
+                    }
+                });
+
             }
-        });
-        
-        //Find every location related to the topics
-        dataCorpus.forEach(function(row){
-            if(row.value.spatial && rowids.indexOf(row.id) != -1 && places_name.indexOf(row.value.spatial) == -1){
-                places_name.push(row.value.spatial);
-            }
-        });
+        });   
     } 
 
-    // function createMap(center){
-    //        var options = {
-    //             zoom: 14,
-    //             center: center,
-    //             mapTypeId: google.maps.MapTypeId.TERRAIN,
-    //             maxZoom: 20
-    //         };
-    //         map = new google.maps.Map(document.getElementById('map'), options);
-               
-    // }
+    function createMap(center){
+           var options = {
+                zoom: 14,
+                center: center,
+                mapTypeId: google.maps.MapTypeId.TERRAIN,
+                maxZoom: 20
+            };
+            map = new google.maps.Map(document.getElementById('map'), options);         
+    }
+
+    function getWaypoints(center,place,map){
+        var optionRequestPlace = {location: center, radius: 500, query: place},
+            googlePlacesService = new google.maps.places.PlacesService(map);
+        
+        return new Promise(function(resolve,reject){
+              googlePlacesService.textSearch(optionRequestPlace,function(textSearch,requestStatus){
+                     if(requestStatus === google.maps.places.PlacesServiceStatus.OK){
+                            resolve({location: textSearch[0].formatted_address,stopover: true});
+                     }else{
+                            resolve(null);
+                     }
+              });
+        });
+    }
+       
+
+
+
+
+    
+
+
+
+
 
     // function drawDirections(center,endroits){
     //     var waypoints = [],
@@ -68,7 +97,6 @@ function getCourseMap(corpus) {
     //         servicePlaces.textSearch(requestPlaces, function(resultats,statusRq){
     //             if(statusRq === google.maps.places.PlacesServiceStatus.OK){
     //                 waypoints.push({location:resultats[0].formatted_address,stopover:true});
-    //                 console.log(endroit+"=>"+resultats[0].formatted_address);
     //                 spatialsAdress.push({lat: resultats[0].geometry.location.lat(),lng:resultats[0].geometry.location.lng(),location:resultats[0].formatted_address,url:'<div><a href="explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + endroit + '">' + endroit + '</a></div>'})
     //                 if(waypoints.length == endroits.length){
     //                     resolve(waypoints);
@@ -158,20 +186,11 @@ function getCourseMap(corpus) {
     Promise.all([requestFactory('http://argos2.hypertopic.org/viewpoint/' + viewpoint,getDataViewpoint)].concat(corpus.map(function(text){
         return requestFactory(text);
     }))).then(function(corpusData){
-            //We had to process the corpus data after because we do need the viewpoint data to be process before going further
-            //We use the same kind of workaround as in the tour page because the data from viewpoint are processed before, hence undefined
-            corpusData.map(function(currentCorpus){
-                if(currentCorpus){
-                    findLocation(currentCorpus.rows);
-                }
-            });
-            // createMap(troyes);
-            // drawDirections(troyes,spatials);
-        });
-
-
-
-}
+            findLocation(corpusData)
+            console.log(places_name);
+            createMap(TROYES_CENTER);
+            //return Promise.all(places_name.map(function(place){return getWaypoints(TROYES_CENTER,place,map);}));
+        })}
 
 
 
