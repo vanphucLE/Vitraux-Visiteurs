@@ -28,7 +28,6 @@ function getCourseMap(corpus) {
         //We had to process the corpus data after because we do need the viewpoint data to be process before going further
         //We use the same kind of workaround as in the tour page because the data from viewpoint are processed before, hence undefined
         dataCorpus.map(function(thisCorpus){
-            if(thisCorpus){
                 var rowids = [];
                 //Allow us to find every rowId for every topic we are looking for 
                 thisCorpus.rows.forEach(function(row){
@@ -43,8 +42,6 @@ function getCourseMap(corpus) {
                         places_name.push(row.value.spatial);
                     }
                 });
-
-            }
         });   
     } 
 
@@ -186,11 +183,16 @@ function getCourseMap(corpus) {
     Promise.all([requestFactory('http://argos2.hypertopic.org/viewpoint/' + viewpoint,getDataViewpoint)].concat(corpus.map(function(text){
         return requestFactory(text);
     }))).then(function(corpusData){
+            //Clean data from undefined data
+            corpusData = cleanData(corpusData);
             findLocation(corpusData)
-            console.log(places_name);
             createMap(TROYES_CENTER);
-            //return Promise.all(places_name.map(function(place){return getWaypoints(TROYES_CENTER,place,map);}));
-        })}
+            return Promise.all(places_name.map(function(place){return getWaypoints(TROYES_CENTER,place,map);}));
+        }).then(function(waypoints){
+            waypoints = cleanData(waypoints);
+            
+        })
+}
 
 
 

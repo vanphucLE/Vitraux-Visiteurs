@@ -54,7 +54,11 @@ var getItemText = function (count, sing, plur) {
     return (count === 1) ? sing : plur;
 };
 
-    
+var cleanData = function(data){
+    return data.filter(function(d){
+        return d;
+    })
+}
     
 
 var requestFactory = function(url,display){

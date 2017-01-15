@@ -39,6 +39,7 @@ function getTours(viewpoints,corpus) {
                         'distance': 0,
                         'locations': 0,
                         'locations_name' : [],
+                        'vitraux' : [],
                         'duration': "NC",
                         'items-nb': 0,
                         'topic-link' : 'map.html?viewpoint=' + viewpoint_id + '&topic=' +idTopic
@@ -54,7 +55,11 @@ function getTours(viewpoints,corpus) {
                 var itemTemp = courseList.get('id',row.value.topic.id)[0];
                 //Add +1 for the current subject and his broader subject
                 while(itemTemp){
-                    itemTemp.values({'items-nb' : itemTemp.values()['items-nb'] + 1 })
+                    if(itemTemp.values()['vitraux'].indexOf(row.id) == -1){
+                        itemTemp.values({'items-nb' : itemTemp.values()['items-nb'] + 1 })
+                        itemTemp.values()['vitraux'].push(row.id);
+                    }
+                    
                     itemTemp = courseList.get('id',itemTemp.values()['broader_id'])[0];
                 }
             }
