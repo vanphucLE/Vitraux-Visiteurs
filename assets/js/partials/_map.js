@@ -76,31 +76,19 @@ function getCourseMap(corpus) {
         var googleDirectionService = new google.maps.DirectionsService(),
             googleDirectionRenderer = new google.maps.DirectionsRenderer({map:map,suppressMarkers:true}),
             options = {origin: start, destination: start, waypoints: waypoints,travelMode: google.maps.DirectionsTravelMode.WALKING, optimizeWaypoints: true};
+            
             return new Promise(function(resolve,reject){
                 googleDirectionService.route(options,function(direction,requestStatus){
                     if(requestStatus == google.maps.DirectionsStatus.OK){
                         googleDirectionRenderer.setDirections(direction);
-
-                        /*
-                         * The waypoints order we get from google is different from
-                         * the waypoint order we had before, since the urls array
-                         * is based on the first order, we have to fix it
-                        */
-                        direction.request.waypoints.forEach(function(wpX,i){
-                            waypoints.forEach(function(wpY,j){
-                                if(wpX.location === wpY.location && i != j){
-                                    infoWindowData[j] = infoWindowData[i]
-                                }
-                            });
-                        });
-        
-
+                        infoWindowData = fixWaypointsOrder(direction.request.waypoints,waypoints,infoWindowData);
                         customizeMarkers(direction.routes[0],map,infoWindowData);
 
                     }
                 })
             })
 
+        //Allow us to manually put marker on the map so we can customize the marker with a infowindow containing the link toward explore
         function customizeMarkers(directionData,map,infoWindowData){
             var locationTracker = [],
                 duration = 0,
@@ -120,29 +108,27 @@ function getCourseMap(corpus) {
                 
             });   
         }
+
+        /*
+        * When we get the waypoints from google direction service,
+        * the order is different from the waypoint we get from
+        * the text search service.Since the urls array is based on
+        * the first one, we need to rearrange those with the order
+        * which was chose by Google Direction Service
+        */
+
+        function fixWaypointsOrder(waypoints1,waypoints2,urls){
+            waypoints1.forEach(function(wpX,i){
+                waypoints2.forEach(function(wpY,j){
+                    if(wpX.location == wpY.location && i !=j ){
+                        urls[j] = urls[i];
+                    }
+                })
+            });
+            return urls
+        }
+
     }
-
-
-    
-
-
-
-
-    // function closestDistance(here,there){
-    //     var lat,
-    //         lon,
-    //         a,
-    //         c,
-    //         d,
-    //         closest;
-
-    //     there.forEach(function(t){
-    //         lat = t.lat - here.lat;
-    //         lng = t.lng - here.lat;
-    //         a = Math.pow((Math.sin(lat/2)),2) + Math.cos(t.lat) * Math.cos(here.lat) * Math.pow((Math.sin(lng/2)),2);
-    //         c = 2 * Math.atan()
-    //     })
-    // }
 
 
     Promise.all([requestFactory('http://argos2.hypertopic.org/viewpoint/' + viewpoint,getDataViewpoint)].concat(corpus.map(function(text){
