@@ -5,7 +5,6 @@ function getCourseMap(corpus) {
         topicids = [ getUrlParameter('topic')],
         places_name = [],
         urls = [],
-        geoApi = navigator.geolocation,
         map;
 
     function getDataViewpoint(dataViewpoint){
@@ -62,8 +61,8 @@ function getCourseMap(corpus) {
         return new Promise(function(resolve,reject){
               googlePlacesService.textSearch(optionRequestPlace,function(textSearch,requestStatus){
                      if(requestStatus === google.maps.places.PlacesServiceStatus.OK){
-                            urls.push('<a href="explore.html?topic='+topicids[0]+'&viewpoint='+viewpoint+'&spatial='+place+'">'+place+'</a>' )
-                            resolve({location: textSearch[0].formatted_address,stopover: true});
+                       
+                            resolve({waypoint: {location: textSearch[0].formatted_address,stopover: true},place:place});
                      }else{
                             resolve(null);
                      }
@@ -72,24 +71,25 @@ function getCourseMap(corpus) {
     }
        
 
-    function setRoute(start,waypoints,map,infoWindowData){
+    function setRoute(dataWaypoint,map){
+      
         var googleDirectionService = new google.maps.DirectionsService(),
             googleDirectionRenderer = new google.maps.DirectionsRenderer({map:map,suppressMarkers:true}),
-            options = {origin: start, destination: start, waypoints: waypoints,travelMode: google.maps.DirectionsTravelMode.WALKING, optimizeWaypoints: true};
+            waypoints = dataWaypoint.map(function(data){return data.waypoint}),
+            options = {origin: waypoints[0].location, destination: waypoints[0].location, waypoints: waypoints,travelMode: google.maps.DirectionsTravelMode.WALKING, optimizeWaypoints: true};
             
             return new Promise(function(resolve,reject){
                 googleDirectionService.route(options,function(direction,requestStatus){
                     if(requestStatus == google.maps.DirectionsStatus.OK){
                         googleDirectionRenderer.setDirections(direction);
-                        infoWindowData = fixWaypointsOrder(direction.request.waypoints,waypoints,infoWindowData);
-                        customizeMarkers(direction.routes[0],map,infoWindowData);
+                        customizeMarkers(direction.routes[0],map,dataWaypoint);
 
                     }
                 })
             })
 
         //Allow us to manually put marker on the map so we can customize the marker with a infowindow containing the link toward explore
-        function customizeMarkers(directionData,map,infoWindowData){
+        function customizeMarkers(directionData,map,dataWaypoint){
             var locationTracker = [],
                 duration = 0,
                 order = directionData.waypoint_order;
@@ -97,7 +97,10 @@ function getCourseMap(corpus) {
            directionData.legs.map(function(thisMarker,index){
                 if(locationTracker.indexOf(thisMarker.end_location.toString()) == -1){
                     var marker = new google.maps.Marker({position: thisMarker.end_location,map:map,label: (index+1).toString()}),
-                        info = new google.maps.InfoWindow({content: infoWindowData[order[index]]});
+                        currentPlace = dataWaypoint[order[index]].place,
+                        info = new google.maps.InfoWindow({
+                            content: '<a href="explore.html?topic='+topicids[0]+'&viewpoint='+viewpoint+'&spatial='+currentPlace+'">'+currentPlace+'</a>'
+                        });
 
                     duration += thisMarker.duration.value;
                     locationTracker.push(thisMarker.end_location.toString()); //So we don't have to compare the whole object
@@ -118,14 +121,15 @@ function getCourseMap(corpus) {
         */
 
         function fixWaypointsOrder(waypoints1,waypoints2,urls){
+            var urlNew = []
             waypoints1.forEach(function(wpX,i){
                 waypoints2.forEach(function(wpY,j){
-                    if(wpX.location == wpY.location && i !=j ){
-                        urls[j] = urls[i];
+                    if(wpX.location == wpY.location){
+                        urlNew[i] = urls[j];
                     }
                 })
             });
-            return urls
+            return urlNew
         }
 
     }
@@ -141,7 +145,7 @@ function getCourseMap(corpus) {
             return Promise.all(places_name.map(function(place){return getWaypoints(TROYES_CENTER,place,map);}));
         }).then(function(waypoints){
             waypoints = cleanData(waypoints);
-            return setRoute(waypoints[0].location,waypoints,map,urls)
+            return setRoute(waypoints,map)
         })
 }
 
