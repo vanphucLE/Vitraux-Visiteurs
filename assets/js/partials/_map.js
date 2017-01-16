@@ -111,27 +111,6 @@ function getCourseMap(corpus) {
                 
             });   
         }
-
-        /*
-        * When we get the waypoints from google direction service,
-        * the order is different from the waypoint we get from
-        * the text search service.Since the urls array is based on
-        * the first one, we need to rearrange those with the order
-        * which was chose by Google Direction Service
-        */
-
-        function fixWaypointsOrder(waypoints1,waypoints2,urls){
-            var urlNew = []
-            waypoints1.forEach(function(wpX,i){
-                waypoints2.forEach(function(wpY,j){
-                    if(wpX.location == wpY.location){
-                        urlNew[i] = urls[j];
-                    }
-                })
-            });
-            return urlNew
-        }
-
     }
 
 

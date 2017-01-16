@@ -1,21 +1,23 @@
 var viewpoints = ['56e092d8a6179a788c74b618b29801c0','a76306e4f17ed4f79e7e481eb9a1bd06'];
-var corpus = ['http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
+var corpusArgos = ['http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
               'http://argos2.hypertopic.org/corpus/Vitraux%20-%20Dr.%20Krieger',
               'http://argos2.hypertopic.org/corpus/Vitraux%20-%20Recensement'];
 
-
+var corpusSt = ['http://steatite.hypertopic.org/corpus/Vitraux - Bénel',
+                'http://steatite.hypertopic.org/corpus/Vitraux%20-%20Dr.%20Krieger',
+                'http://steatite.hypertopic.org/corpus/Vitraux%20-%20Recensementl']
         
 var loading = function(){
     var pageToLoad = $('div.content').attr('id');
     switch (pageToLoad) {
             case 'courses':
-                getTours(viewpoints,corpus);
+                getTours(viewpoints,corpusArgos);
                 break;
             case 'map-page':
-                getCourseMap(corpus);
+                getCourseMap(corpusArgos);
                 break;
             case 'explore-page':
-                getLocationVitraux();
+                getLocationVitraux(corpusArgos,corpusSt);
                 break;
             case 'preview-page':
                 getVitrailId();
