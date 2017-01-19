@@ -1,5 +1,5 @@
-var google;
 function getCourseMap(corpus) {
+    $('#back').attr('href', 'courses.html');
     var viewpoint = getUrlParameter('viewpoint'),
         TROYES_CENTER =  new google.maps.LatLng(48.2973725, 4.0721523),
         topicids = [ getUrlParameter('topic')],
@@ -61,18 +61,77 @@ function getCourseMap(corpus) {
         return new Promise(function(resolve,reject){
               googlePlacesService.textSearch(optionRequestPlace,function(textSearch,requestStatus){
                      if(requestStatus === google.maps.places.PlacesServiceStatus.OK){
-                       
-                            resolve({waypoint: {location: textSearch[0].formatted_address,stopover: true},place:place});
+                            resolve({waypoint: {location: textSearch[0].formatted_address,stopover: true},
+                                     place:place,
+                                     coordinate:{latitude:textSearch[0].geometry.location.lat(),longitude:textSearch[0].geometry.location.lng()}
+                                    });
                      }else{
                             resolve(null);
                      }
               });
         });
     }
+
+
+    function setRouteGeolocation(waypoints,map){
+        var geolocation = navigator.geolocation;
+
+        if("geolocation" in navigator){
+
+            geolocation.getCurrentPosition(function(currentPosition){
+                
+                  var distances = transformWaypoints(waypoints).map(function(thiswp){
+                        return haversine(thiswp,currentPosition.coords)
+                  })
+
+
+                //Return index of minimum value of the array
+                var minDistanceIndex = distances.reduce(function(a,b,index,array){
+                    return (b < array[a]) ? index : a;
+                },0)
+
+                return setRoute(waypoints,map,minDistanceIndex);
+
+            },function(erreurGeolocation){
+                return setRoute(waypoints,map,0); // If user don't want to use geolocation 
+            });
+        }else{
+           return setRoute(waypoints,map,0); //if geolocation not available 
+        }
+
+
+        function transformWaypoints(waypoints){
+           return waypoints.map(function(waypoint){
+                return  waypoint.coordinate;
+           })
+        }
+
+        function haversine(pointX,pointY){
+            var rayonTerre = 6371; //In Kilometer
+                gammaX = toRad(pointX.latitude),
+                gammaY = toRad(pointY.latitude),
+                deltaX = toRad(pointY.latitude - pointX.latitude),
+                deltaY = toRad(pointY.longitude - pointX.longitude),
+                calcul = Math.sin(deltaX/2) * Math.sin(deltaX/2)+
+                         Math.cos(gammaX) * Math.cos(gammaY) *
+                         Math.sin(deltaY/2) * Math.sin(deltaY/2),
+                secondCalcul = 2* Math.atan2(Math.sqrt(calcul),Math.sqrt(1-calcul));
+
+                return (rayonTerre * secondCalcul).toFixed(3)/1;
+
+
+        }
+
+        function toRad(valueInDegree){
+            return (valueInDegree*Math.PI) / 180;
+        }
+
+
+    }
+
        
 
-    function setRoute(dataWaypoint,map){
-      
+    function setRoute(dataWaypoint,map,indexStart){
         var googleDirectionService = new google.maps.DirectionsService(),
             googleDirectionRenderer = new google.maps.DirectionsRenderer({map:map,suppressMarkers:true}),
             waypoints = dataWaypoint.map(function(data){return data.waypoint}),
@@ -124,7 +183,7 @@ function getCourseMap(corpus) {
             return Promise.all(places_name.map(function(place){return getWaypoints(TROYES_CENTER,place,map);}));
         }).then(function(waypoints){
             waypoints = cleanData(waypoints);
-            return setRoute(waypoints,map)
+            return setRouteGeolocation(waypoints,map)
         })
 }
 
