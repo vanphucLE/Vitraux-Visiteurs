@@ -49,7 +49,7 @@ function getLocationVitraux(corpusA,corpusS) {
                             var item_id = row.id,
                                 url = 'description.html?id='+item_id+'&topic='+topicids[0]+'&viewpoint='+viewpoint+'&spatial='+spatial,
                                 item =  '<li id="' + item_id + '" class="table-view-cell">' +
-                                        '<a class="navigate-right" href="' + url + '" data-transition="slide-in">' +
+                                        '<a class="navigate-right" href="' + url + '" data-transition="slide-in" data-ignore="push">' +
                                         '<div class="stained-glass-desc">' +
                                         '<h3 class="stained-glass-name"></h3>' +
                                         '</div>' +
