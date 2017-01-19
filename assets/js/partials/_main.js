@@ -6,6 +6,20 @@ var corpusArgos = ['http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
 var corpusSt = ['http://steatite.hypertopic.org/corpus/Vitraux - Bénel',
                 'http://steatite.hypertopic.org/corpus/Vitraux%20-%20Dr.%20Krieger',
                 'http://steatite.hypertopic.org/corpus/Vitraux%20-%20Recensement']
+
+
+var constanteSpatial = {
+    "Aulnay":"10240,Aulnay",
+    "Braux" : "10500,Braux",
+    "Église Notre-Dame, Villeneuve-l'Archevêque":"89190, Villeneuve-l'Archevêque",
+    "Église Saint-Pierre-ès-Liens, Ervy-le-Châtel":"10130, Ervy-le-Châtel",
+    "Chatres": "10510,Chatres",
+    "Église Saint-Remi, Troyes":"1, rue Pithou, Troyes",
+    "Église Saint-Pierre, Trouans":"10700, Trouans",
+    "Moussey": "10800, Moussey",
+    "Ormes": "10700, Ormes"
+
+}
         
 var loading = function(){
     var pageToLoad = $('div.content').attr('id');

@@ -55,10 +55,16 @@ function getCourseMap(corpus) {
     }
 
     function getWaypoints(center,place,map){
+
         var optionRequestPlace = {location: center, radius: 500, query: place},
             googlePlacesService = new google.maps.places.PlacesService(map);
+
+        if(constanteSpatial[place]){
+           optionRequestPlace.query = constanteSpatial[place];
+        }
         
         return new Promise(function(resolve,reject){
+
               googlePlacesService.textSearch(optionRequestPlace,function(textSearch,requestStatus){
                      if(requestStatus === google.maps.places.PlacesServiceStatus.OK){
                             resolve({waypoint: {location: textSearch[0].formatted_address,stopover: true},
@@ -71,7 +77,6 @@ function getCourseMap(corpus) {
               });
         });
     }
-
 
     function setRouteGeolocation(waypoints,map){
         var geolocation = navigator.geolocation;
@@ -195,10 +200,13 @@ function getCourseMap(corpus) {
             waypoints = cleanData(waypoints);
             return setRouteGeolocation(waypoints,map)
         })
+
 }
 
 
 
-
+   
 
    
+
+
