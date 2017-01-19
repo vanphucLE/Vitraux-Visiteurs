@@ -158,7 +158,7 @@ function getCourseMap(corpus) {
                     var marker = new google.maps.Marker({position: thisMarker.end_location,map:map,label: (index+1).toString()}),
                         currentPlace = dataWaypoint[order[index]].place,
                         info = new google.maps.InfoWindow({
-                            content: '<a href="explore.html?topic='+topicids[0]+'&viewpoint='+viewpoint+'&spatial='+currentPlace+'">'+currentPlace+'</a>'
+                            content: '<a href="explore.html?topic='+topicids[0]+'&viewpoint='+viewpoint+'&spatial='+currentPlace+'"data-transition="slide-in" data-ignore="push">'+currentPlace+'</a>'
                         });
 
                     duration += thisMarker.duration.value;
