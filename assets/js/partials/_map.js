@@ -94,7 +94,7 @@ function getCourseMap(corpus) {
 
             },function(erreurGeolocation){
                 return setRoute(waypoints,map,0); // If user don't want to use geolocation 
-            });
+            },{maximumAge: 1440000 });
         }else{
            return setRoute(waypoints,map,0); //if geolocation not available 
         }

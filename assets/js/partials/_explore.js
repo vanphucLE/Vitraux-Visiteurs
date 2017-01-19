@@ -44,7 +44,6 @@ function getLocationVitraux(corpusA,corpusS) {
                     tempRowids.push(row.id);
                 }
             })
-
             corpus.rows.forEach(function(row){
                 if(tempRowids.indexOf(row.id) != -1 && row.value.spatial && row.value.spatial == spatial){
                             var item_id = row.id,
@@ -61,7 +60,7 @@ function getLocationVitraux(corpusA,corpusS) {
                             rowids.push(row.id);
                 }       
             });
-
+            
         })
 
     }

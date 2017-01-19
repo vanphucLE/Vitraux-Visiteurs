@@ -5,7 +5,7 @@ var corpusArgos = ['http://argos2.hypertopic.org/corpus/Vitraux - Bénel',
 
 var corpusSt = ['http://steatite.hypertopic.org/corpus/Vitraux - Bénel',
                 'http://steatite.hypertopic.org/corpus/Vitraux%20-%20Dr.%20Krieger',
-                'http://steatite.hypertopic.org/corpus/Vitraux%20-%20Recensementl']
+                'http://steatite.hypertopic.org/corpus/Vitraux%20-%20Recensement']
         
 var loading = function(){
     var pageToLoad = $('div.content').attr('id');
