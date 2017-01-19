@@ -168,8 +168,18 @@ function getCourseMap(corpus) {
                     });
                 }
                 
-            });   
+            });  
+            setDuration(duration); 
         }
+
+    }
+
+
+    function setDuration(duration){
+        var storage = localStorage;
+        duration = getCourseDuration(duration);
+        $('#duration').text(duration);
+        storage.setItem(topicids[0],duration);
     }
 
 

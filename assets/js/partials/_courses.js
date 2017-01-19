@@ -1,6 +1,6 @@
 function getTours(viewpoints,corpus) {
 
-
+    var storage = localStorage;
 
 
     var displayViewPoint = function(dataViewpoint){
@@ -40,7 +40,7 @@ function getTours(viewpoints,corpus) {
                         'locations': 0,
                         'locations_name' : [],
                         'vitraux' : [],
-                        'duration': "NC",
+                        'duration': (storage.getItem(idTopic)) ? storage.getItem(idTopic) : "NC" ,
                         'items-nb': 0,
                         'topic-link' : 'map.html?viewpoint=' + viewpoint_id + '&topic=' +idTopic
                  });

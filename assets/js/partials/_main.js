@@ -28,20 +28,15 @@ var loading = function(){
     }
 }
         
-var getCourseDuration = function (total_min) {
-    var hours = Math.floor(total_min / 60);
-    var minutes = total_min % 60;
-    if (hours === 0) {
-        if (minutes === 0) {
-            return '0';
-        }
-        return minutes + ' min';
-    } else {
-        if (minutes === 0) {
-            return hours + ' h';
-        }
-        return hours + 'h' + minutes;
-    }
+var getCourseDuration = function (total_sec) {
+    var jour = Math.floor(total_sec /(24*3600));
+    total_sec = total_sec - (jour*24*3600);
+    var heure = Math.floor(total_sec/3600);
+    total_sec = total_sec - (heure*3600);
+    var minute = Math.floor(total_sec/60);
+    heure = heure + (jour*24);
+
+    return heure+' heures et '+minute+" minutes";
 };
 
 var getUrlParameter = function getUrlParameter(sParam) {
