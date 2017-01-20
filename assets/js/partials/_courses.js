@@ -36,13 +36,13 @@ function getTours(viewpoints,corpus) {
                         'course-title': 'Parcours "' + name + '"',
                         'course-vp': "— " + viewpoint_name,
                         'broader_id': broader,
-                        'distance': 0,
+                        'distance': (storage.getItem(idTopic+'_distance')) ? storage.getItem(idTopic+'_distance')+' km' : "NC" ,
                         'locations': 0,
-                        'locations_name' : [],
+                        'locations_name': [],
                         'vitraux' : [],
-                        'duration': (storage.getItem(idTopic)) ? storage.getItem(idTopic) : "NC" ,
+                        'duration': (storage.getItem(idTopic+'_duration')) ? storage.getItem(idTopic+'_duration') : "NC" ,
                         'items-nb': 0,
-                        'topic-link' : 'map.html?viewpoint=' + viewpoint_id + '&topic=' +idTopic
+                        'topic-link': 'map.html?viewpoint=' + viewpoint_id + '&topic=' +idTopic
                  });
             }
         })    
@@ -115,7 +115,7 @@ function getTours(viewpoints,corpus) {
                         '<div>' +
                         '<p>' +
                         '<span class="fa fa-flag-o"></span> ' +
-                        '<span class="distance"></span> km' +
+                        '<span class="distance"></span>' +
                         '</p>' +
                         '<p>' +
                         '<span class="fa fa-map-marker"></span> ' +

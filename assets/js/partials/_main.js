@@ -14,7 +14,7 @@ var constanteSpatial = {
     "Église Notre-Dame, Villeneuve-l'Archevêque":"89190, Villeneuve-l'Archevêque",
     "Église Saint-Pierre-ès-Liens, Ervy-le-Châtel":"10130, Ervy-le-Châtel",
     "Chatres": "10510,Chatres",
-    "Église Saint-Remi, Troyes":"1, rue Pithou, Troyes",
+    "Église Saint-Remi, Troyes":"Place Saint-Rémy, 10000, Troyes",
     "Église Saint-Pierre, Trouans":"10700, Trouans",
     "Moussey": "10800, Moussey",
     "Ormes": "10700, Ormes"

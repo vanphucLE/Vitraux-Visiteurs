@@ -99,7 +99,7 @@ function getCourseMap(corpus) {
 
             },function(erreurGeolocation){
                 return setRoute(waypoints,map,0); // If user don't want to use geolocation 
-            },{maximumAge: 1440000 });
+            },{timeout: 1000 });
         }else{
            return setRoute(waypoints,map,0); //if geolocation not available 
         }
@@ -122,6 +122,7 @@ function getCourseMap(corpus) {
                          Math.sin(deltaY/2) * Math.sin(deltaY/2),
                 secondCalcul = 2* Math.atan2(Math.sqrt(calcul),Math.sqrt(1-calcul));
 
+                //toFixed return a string, we divide by one to play on js dynamic type (not my idea tho)
                 return (rayonTerre * secondCalcul).toFixed(3)/1;
 
 
@@ -156,6 +157,7 @@ function getCourseMap(corpus) {
         function customizeMarkers(directionData,map,dataWaypoint){
             var locationTracker = [],
                 duration = 0,
+                distance = 0,
                 order = directionData.waypoint_order;
 
            directionData.legs.map(function(thisMarker,index){
@@ -167,6 +169,7 @@ function getCourseMap(corpus) {
                         });
 
                     duration += thisMarker.duration.value;
+                    distance += thisMarker.distance.value
                     locationTracker.push(thisMarker.end_location.toString()); //So we don't have to compare the whole object
                     marker.addListener('click',function(){
                         info.open(map,marker);
@@ -174,17 +177,17 @@ function getCourseMap(corpus) {
                 }
                 
             });  
-            setDuration(duration); 
+            storeInformation(getCourseDuration(duration),Math.ceil(distance/1000)); 
         }
 
     }
 
 
-    function setDuration(duration){
+    function storeInformation(duration,distance){
         var storage = localStorage;
-        duration = getCourseDuration(duration);
         $('#duration').text(duration);
-        storage.setItem(topicids[0],duration);
+        storage.setItem(topicids[0]+'_duration',duration);
+        storage.setItem(topicids[0]+'_distance',distance);
     }
 
 
