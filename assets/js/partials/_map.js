@@ -1,5 +1,4 @@
 function getCourseMap(corpus) {
-    $('#back').attr('href', 'courses.html');
     var viewpoint = getUrlParameter('viewpoint'),
         TROYES_CENTER =  new google.maps.LatLng(48.2973725, 4.0721523),
         topicids = [ getUrlParameter('topic')],
@@ -84,12 +83,9 @@ function getCourseMap(corpus) {
         if("geolocation" in navigator){
 
             geolocation.getCurrentPosition(function(currentPosition){
-                
                   var distances = transformWaypoints(waypoints).map(function(thiswp){
                         return haversine(thiswp,currentPosition.coords)
                   })
-
-
                 //Return index of minimum value of the array
                 var minDistanceIndex = distances.reduce(function(a,b,index,array){
                     return (b < array[a]) ? index : a;
@@ -97,11 +93,7 @@ function getCourseMap(corpus) {
 
                 return setRoute(waypoints,map,minDistanceIndex);
 
-            },function(erreurGeolocation){
-                return setRoute(waypoints,map,0); // If user don't want to use geolocation 
-            },{timeout: 1000 });
-        }else{
-           return setRoute(waypoints,map,0); //if geolocation not available 
+            });
         }
 
 
@@ -124,15 +116,11 @@ function getCourseMap(corpus) {
 
                 //toFixed return a string, we divide by one to play on js dynamic type (not my idea tho)
                 return (rayonTerre * secondCalcul).toFixed(3)/1;
-
-
         }
 
         function toRad(valueInDegree){
             return (valueInDegree*Math.PI) / 180;
         }
-
-
     }
 
        
@@ -143,6 +131,8 @@ function getCourseMap(corpus) {
             waypoints = dataWaypoint.map(function(data){return data.waypoint}),
             options = {origin: waypoints[0].location, destination: waypoints[0].location, waypoints: waypoints,travelMode: google.maps.DirectionsTravelMode.WALKING, optimizeWaypoints: true};
             
+
+
             return new Promise(function(resolve,reject){
                 googleDirectionService.route(options,function(direction,requestStatus){
                     if(requestStatus == google.maps.DirectionsStatus.OK){
@@ -179,13 +169,14 @@ function getCourseMap(corpus) {
             });  
             storeInformation(getCourseDuration(duration),Math.ceil(distance/1000)); 
         }
-
     }
 
 
     function storeInformation(duration,distance){
         var storage = localStorage;
         $('#duration').text(duration);
+        $('#distance').text(distance+' km');
+
         storage.setItem(topicids[0]+'_duration',duration);
         storage.setItem(topicids[0]+'_distance',distance);
     }
@@ -201,7 +192,7 @@ function getCourseMap(corpus) {
             return Promise.all(places_name.map(function(place){return getWaypoints(TROYES_CENTER,place,map);}));
         }).then(function(waypoints){
             waypoints = cleanData(waypoints);
-            return setRouteGeolocation(waypoints,map)
+            return Promise.all([setRouteGeolocation(waypoints,map),setRoute(waypoints,map,0)])
         })
 
 }
