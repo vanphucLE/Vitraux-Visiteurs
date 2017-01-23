@@ -10,7 +10,6 @@ module.exports = function (grunt) {
                         'assets/js/partials/_courses.js',
                         'assets/js/partials/_map.js',
                         'assets/js/partials/_explore.js',
-                        'assets/js/partials/_preview.js',
                         'assets/js/partials/_description.js'
                     ]
                 }
