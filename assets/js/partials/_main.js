@@ -37,7 +37,7 @@ var loading = function(){
                 getVitrailId();
                 break;
             case 'description-page':
-                getDescription(corpusSt);
+                getDescription(viewpoints,corpusSt);
                 break;
     }
 }

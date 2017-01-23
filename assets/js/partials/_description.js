@@ -1,4 +1,4 @@
-function getDescription(corpusS) {
+function getDescription(viewpoints,corpusS) {
     var id = getUrlParameter("id");
     var spatial = getUrlParameter("spatial");
     var viewpoint = getUrlParameter("viewpoint");
@@ -6,9 +6,11 @@ function getDescription(corpusS) {
 
     $('#back').attr('href', 'explore.html?topic=' + topic + '&viewpoint=' + viewpoint + '&spatial=' + spatial);
 
-      Promise.all([requestFactory('http://argos2.hypertopic.org/viewpoint/' + viewpoint,getTheme)].concat(corpusS.map(function(text){
+      Promise.all(viewpoints.map(function(vp){
+        return requestFactory('http://argos2.hypertopic.org/viewpoint/' + vp,getTheme)
+      }).concat(corpusS.map(function(text){
         return requestFactory(text,displayImage);
-    })))
+    })));
 
 
 function displayImage(data) {
@@ -33,16 +35,16 @@ function displayImage(data) {
             $("#vitrail-resource").attr("alt", name);
         }
 
-    //getTheme(viewpoint,topic);
-
-
 function getTheme(data){
-
-}
-
-
-function getTheme(data){
-            var topics = [];
+            var topicsArray = [],
+                topicTemp = [],
+                topics = [];
+            $('#description-complete').append('<div id="'+data.rows[0].key[0]+'"><h3>'+data.rows[0].value.name+'</h3></div>');
+            data.rows.forEach(function(row){
+                if(row.value.item && row.value.item.id == id){
+                    topicTemp.push(row.key[1]);
+                }
+            })
             var f = function(r,t){
                 var name = "",
                     broader;
@@ -60,9 +62,20 @@ function getTheme(data){
                     f(r,broader.id);
                 }
             }
-            f(data,topic);
-            topics = topics.reverse().join(' > ');
-            $('#description-complete').append('<div><h3>'+data.rows[0].value.name+'</h3><p class="content-padded description">'+topics+'</p></div>');
+
+
+            topicTemp.map(function(t){
+                f(data,t);
+                topicsArray.push(topics);
+                topics = []
+            });
+            topicsArray.map(function(e){
+                e = e.reverse().join(' > ');
+                $('#'+data.rows[0].key[0]).append('<p class="content-padded description">'+e+'</p>')
+            })
+            
+           
+            
 
 }
 
