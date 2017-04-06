@@ -12,7 +12,7 @@ Fonctionnalité: Consulter les descriptions des vitraux
     Quand il lance l'application sur son téléphone
     Et que il entre le nom du vitrail
     Alors l'application lui montrerait des informations sur le vitrail
-    Et il serait content.;
+    Et "Wow !" - dirait-il. ;
 
   Scénario: Michel consulte les parcours sur l'application, de chez lui
     Etant donné que Michel regarde les parcours sur l'application
@@ -20,4 +20,4 @@ Fonctionnalité: Consulter les descriptions des vitraux
     Et qu'il souhaite en savoir plus dessus
     Quand il clique dessus
     Alors l'application lui montrerait des informations sur le vitrail.
-    Et il serait content.;
+    Et "Wow !" - dirait-il. ;
