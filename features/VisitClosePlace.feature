@@ -2,16 +2,28 @@
 
 Fonctionnalité: Visiter un lieu proche contenant des vitraux
 
-  Un utilisateur se trouve à une certaine position et souhaiterait connaître les lieux alentours à visiter contenant des vitraux.
-  L'utilisateur se nomme Michel et est un touriste en visite sur Troyes pour le Week-end.
+
+  Un touriste en visite dans les environs de Troyes se trouve être à une certaine position et souhaite
+  connaître les lieux alentours à visiter contenant des vitraux.
+
 
   Scénario: Le touriste veut se déplacer dans le lieu quelconque le plus proche contenant des vitraux
 
     Étant donné que le touriste se situe à une certaine position
-    Quand il aimerait connaître l'endroît le plus proche contenant des vitraux
-    Alors l'application lui fournit la localisation du lieu
-    Et elle lui fournit le chemin le plus court pour y accéder
-    Et elle lui fournit la distance et le temps de trajet
+    Quand il veut connaître l'endroît le plus proche contenant des vitraux
+    Alors il lui serait proposer la localisation du lieu le plus proche de lui
+    Et il lui serait fournit le chemin le plus court pour y accéder
+    Et il lui serait fournit la distance et le temps de trajet
+
+    Scénario: Le touriste veut se déplacer dans un lieu le plus proche contenant des vitraux qui l'intéressent
+
+      Étant donné que le touriste se situe à une certaine position
+      Quand il veut connaître l'endroît le plus proche contenant des vitraux qui l'intéressent
+      Alors il lui serait demander de mentioner ses attentes en matière de vitraux
+      Et il lui serait proposer la localisation du lieu le plus proche de lui
+      Et il lui serait fournit le chemin le plus court pour y accéder
+      Et il lui serait fournit la distance et le temps de trajet
+
 
     Scénario: Le touriste veut se déplacer dans un lieu le plus proche contenant des vitraux qui l'intéresse
 
@@ -21,3 +33,4 @@ Fonctionnalité: Visiter un lieu proche contenant des vitraux
       Et l'application lui fournit la localisation du lieu
       Et elle lui fournit le chemin le plus court pour y accéder
       Et elle lui fournit la distance et le temps de trajet
+
