@@ -18,14 +18,14 @@ Fonctionnalité: M'amuser en m'instruisant sur les vitraux
   Scénario: André veut rendre sa visite des vitraux de Troyes ludique
     Etant donné que André visite les vitraux de Troyes avec sa famille
     Et qu'il souhaite garder intéréssés ses enfants en les amusant
-    Quand il voit un vitrail
-    Alors il gagnerait un badge et montrerait à ses enfants le badge gagné. ;
+    Quand il voit un vitrail de "Jésus"
+    Alors il gagnerait un badge et montrerait à ses enfants le badge "Jésus" gagné. ;
 
   Scénario: André veut garder intéréssé ses enfants jusqu'à la fin d'un parcours
-    Etant donné que André effectue un parcous avec sa famille
+    Etant donné que André effectue un parcours sur "Marie" avec sa famille
     Et qu'il souhaite garder intéréssés ses enfants en les amusant jusqu'à la fin de la visite
-    Quand il termine la visite
-    Alors il gagnerait un badge spécial de fin de parcours et ses enfants auraient été motivés par le gain de ce haut-fait. ;
+    Quand il termine la visite "Marie"
+    Alors il gagnerait un badge spécial de fin de parcours "Marie" et ses enfants auraient été motivés par le gain de ce haut-fait. ;
 
   Scénario: André souhaite partager son score à ses amis
     Etant donné que André a une grande collection de badge
