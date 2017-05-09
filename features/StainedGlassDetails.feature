@@ -10,7 +10,7 @@ Fonctionnalité: Consulter les descriptions des vitraux
     Et que il souhaite avoir des informations sur celui-ci
     Et que il connait le nom du vitrail
     Quand il lance l'application sur son téléphone
-    Et que il entre le nom du vitrail
+    Et que il entre "La genèse" comme nom de vitrail du vitrail
     Alors l'application lui montrerait des informations sur le vitrail
     Et "Wow !" - dirait-il. ;
 
